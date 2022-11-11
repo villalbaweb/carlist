@@ -1,42 +1,15 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace CarListApp.Maui.ViewModels;
 
-public class BaseViewModel : INotifyPropertyChanged
+public partial class BaseViewModel : ObservableObject
 {
-    string _title;
-    bool _isBusy;
+    [ObservableProperty]
+    string title;
 
-    public string Title
-    {
-        get => _title;
-        set
-        {
-            if (_title == value) return;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsNotLoading))]
+    bool isLoading;
 
-            _title = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public bool IsBusy 
-    { 
-        get => _isBusy;  
-        set 
-        {
-            if (_isBusy == value) return;
-
-            _isBusy = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-
-    public void OnPropertyChanged([CallerMemberName] string name = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-    }
+    public bool IsNotLoading => !isLoading;
 }
