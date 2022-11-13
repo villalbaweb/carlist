@@ -1,40 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CarListApp.Maui.MainPage">
+             x:Class="CarListApp.Maui.MainPage"
+             x:DataType ="viewmodel:CarListViewModel"
+             xmlns:model ="clr-namespace:CarListApp.Maui.Models"
+             xmlns:viewmodel ="clr-namespace:CarListApp.Maui.ViewModels"
+             Title="{Binding Title}">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
+    <Grid ColumnDefinitions="*,*" 
+          ColumnSpacing="5" 
+          RowDefinitions="*, Auto">
 
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
+        <RefreshView 
+            Grid.ColumnSpan="2"
+            Command="{Binding GetCarsCommand}"
+            IsRefreshing="{Binding IsRefreshing}">
+            
+            <CollectionView 
+                ItemsSource="{Binding Cars}" 
+                SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Car">
+                        <Grid Padding="10">
+                            <Frame HeightRequest="90">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="" CommandParameter=""/>
+                                </Frame.GestureRecognizers>
+                                <HorizontalStackLayout Padding="10" Spacing="5">
+                                    <Label Text="{Binding Make}"></Label>
+                                    <Label Text="{Binding Model}"></Label>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+        </RefreshView>
+        
 
-            <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
-
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                HorizontalOptions="Center" />
-
-        </VerticalStackLayout>
-    </ScrollView>
-
+        <Button 
+            Text="Fecth Cars"
+            Command="{Binding GetCarsCommand}"
+            IsEnabled="{Binding IsNotLoading}"
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="9"/>
+    </Grid>
+    
 </ContentPage>

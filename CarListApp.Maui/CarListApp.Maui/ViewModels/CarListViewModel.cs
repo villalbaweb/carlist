@@ -1,5 +1,6 @@
 ﻿using CarListApp.Maui.Models;
 using CarListApp.Maui.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -19,7 +20,10 @@ public partial class CarListViewModel : BaseViewModel
 		_carService = carService;
 	}
 
-	[RelayCommand]
+    [ObservableProperty]
+    bool isRefreshing;
+
+    [RelayCommand]
 	async Task GetCarsAsync()
 	{
 		if (IsLoading) return;
@@ -27,6 +31,7 @@ public partial class CarListViewModel : BaseViewModel
 		try
 		{
 			IsLoading = true;
+			isRefreshing= true;
 
 			if (Cars.Any()) Cars.Clear();
 
@@ -46,6 +51,7 @@ public partial class CarListViewModel : BaseViewModel
 		finally
 		{
 			IsLoading = false;
+			isRefreshing = false;
 		}
 	}
 }
