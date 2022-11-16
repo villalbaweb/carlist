@@ -24,7 +24,11 @@
                         <Grid Padding="10">
                             <Frame HeightRequest="90">
                                 <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="" CommandParameter=""/>
+                                    <!--RelativeSOurce is required because now the BindingContext is not the CarListViewModel but a Car itself due the DataTemplate to Car-->
+                                    <!--Binding . as CommandParameter value basically is indicatin to pass the entire Car object that correspond to the tapped Frame-->
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarListViewModel}}, Path=GetCarDetailsCommand}" 
+                                        CommandParameter="{Binding .}"/>
                                 </Frame.GestureRecognizers>
                                 <HorizontalStackLayout Padding="10" Spacing="5">
                                     <Label Text="{Binding Make}"></Label>
