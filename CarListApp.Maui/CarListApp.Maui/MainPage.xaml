@@ -16,6 +16,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -39,8 +40,15 @@
             Margin="9" />
 
         <Button 
-            Text="Fetch Cars"
+            Text="Clear Form"
             Grid.Row="2"
+            IsEnabled="{Binding IsNotLoading}"
+            Command="{Binding ClearFormCommand}"
+            Margin="9" />
+
+        <Button 
+            Text="Fetch Cars"
+            Grid.Row="3"
             IsEnabled="{Binding IsNotLoading}"
             Command="{Binding GetCarsCommand}"
             Margin="9" />

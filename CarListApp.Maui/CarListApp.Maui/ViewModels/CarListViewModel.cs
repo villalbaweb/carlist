@@ -3,7 +3,6 @@ using CarListApp.Maui.Services;
 using CarListApp.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using System.Collections.ObjectModel;
 
 namespace CarListApp.Maui.ViewModels;
@@ -23,6 +22,8 @@ public partial class CarListViewModel : BaseViewModel
 		Title = "CarList";
 
 		_carService = carService;
+
+		AddUpdateModeText = CREATE_BTN_TXT;
 	}
 	
 	
@@ -72,6 +73,7 @@ public partial class CarListViewModel : BaseViewModel
 
         await Shell.Current.DisplayAlert("Info", _carService.StatusMessage, "OK");
 		await GetCarsAsync();
+		await ClearForm();
     }
 
     [RelayCommand]
@@ -150,5 +152,19 @@ public partial class CarListViewModel : BaseViewModel
 		Model = car.Model;
 		Vin = car.Vin;
 
+        await Task.CompletedTask;
     }
+
+	[RelayCommand]
+	async Task ClearForm()
+	{
+		isUpdateMode = false;
+		AddUpdateModeText = CREATE_BTN_TXT;
+		carId = 0;
+		Make = string.Empty;
+		Model = string.Empty;
+		Vin = string.Empty;
+
+		await Task.CompletedTask;
+	}
 }
