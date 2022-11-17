@@ -53,11 +53,6 @@ public partial class CarListViewModel : BaseViewModel
 		await GetCarsAsync();
     }
 
-	[RelayCommand]
-	async Task UpdateCarAsync(int id)
-	{
-		await Task.CompletedTask;
-	}
 
     [RelayCommand]
 	async Task DeleteCarAsync(int id)
@@ -99,7 +94,6 @@ public partial class CarListViewModel : BaseViewModel
 		}
 		catch (Exception ex)
 		{
-			Debug.WriteLine($"Unable to get cars: {ex.Message}");
 			await Shell.Current.DisplayAlert("Error", "Failed to retrieve list of cars.", "OK");	// Daniel: Move this away to an abstraction the ViewModel should not be aware of the View
 			throw;
 		}
@@ -119,4 +113,10 @@ public partial class CarListViewModel : BaseViewModel
 			$"{ nameof(CarDetailsPage) }?Id={id}", 
 			true);
 	}
+
+    [RelayCommand]
+    async Task SetEditModeAsync(int id)
+    {
+        await Shell.Current.DisplayAlert("Info", $"Updating id - {id}.", "OK");
+    }
 }

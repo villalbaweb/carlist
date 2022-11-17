@@ -77,15 +77,15 @@
                                 Grid.Column="1">
                                 <Button 
                                     Text="Update"
-                                    IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarDetailsViewModel}}, Path=IsNotLoading}"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarDetailsViewModel}}, Path=UpdateCarCommand}"
+                                    IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarListViewModel}}, Path=IsNotLoading}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarListViewModel}}, Path=SetEditModeCommand}"
                                     CommandParameter="{Binding Id}"
                                     Margin="9" />
                                 
                                 <Button 
                                     Text="Delete"
-                                    IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarDetailsViewModel}}, Path=IsNotLoading}"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarDetailsViewModel}}, Path=DeleteCarCommand}"
+                                    IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarListViewModel}}, Path=IsNotLoading}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarListViewModel}}, Path=DeleteCarCommand}"
                                     CommandParameter="{Binding Id}"
                                     Margin="9" />
                             </HorizontalStackLayout>
