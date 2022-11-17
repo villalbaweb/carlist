@@ -7,49 +7,95 @@
              xmlns:viewmodel ="clr-namespace:CarListApp.Maui.ViewModels"
              Title="{Binding Title}">
 
-    <Grid ColumnDefinitions="*,*" 
-          ColumnSpacing="5" 
-          RowDefinitions="*, Auto">
+    <Grid
+        ColumnSpacing="1"
+        RowSpacing="1"
+        Padding="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <VerticalStackLayout
+            Padding="5"
+            Grid.Row="0"
+            Margin="9">
+            <Entry  x:Name="Make"   Placeholder="Enter Make"    Text="{Binding Make}" />
+            <Entry  x:Name="Model"  Placeholder="Enter Model"   Text="{Binding Model}" />
+            <Entry  x:Name="Vin"    Placeholder="Enter Vin"     Text="{Binding Vin}" />
+        </VerticalStackLayout>
+
+        <Button 
+            Text="Add Car"
+            Grid.Row="1"
+            IsEnabled="{Binding IsNotLoading}"
+            Command="{Binding AddCarCommand}"
+            Margin="9" />
+
+        <Button 
+            Text="Fetch Cars"
+            Grid.Row="2"
+            IsEnabled="{Binding IsNotLoading}"
+            Command="{Binding GetCarsCommand}"
+            Margin="9" />
 
         <RefreshView 
-            Grid.ColumnSpan="2"
+            Grid.Row="4"
             Command="{Binding GetCarsCommand}"
             IsRefreshing="{Binding IsRefreshing}">
-            
+
             <CollectionView 
                 ItemsSource="{Binding Cars}" 
                 SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:Car">
-                        <Grid Padding="10">
-                            <Frame HeightRequest="90">
+                        <Grid 
+                            Padding="10"
+                            ColumnDefinitions="*, Auto">
+                            <Frame 
+                                HeightRequest="80"
+                                Grid.Column="0">
                                 <Frame.GestureRecognizers>
                                     <!--RelativeSOurce is required because now the BindingContext is not the CarListViewModel but a Car itself due the DataTemplate to Car-->
                                     <!--Binding . as CommandParameter value basically is indicatin to pass the entire Car object that correspond to the tapped Frame-->
                                     <TapGestureRecognizer 
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarListViewModel}}, Path=GetCarDetailsCommand}" 
-                                        CommandParameter="{Binding .}"/>
+                                        CommandParameter="{Binding Id}"/>
                                 </Frame.GestureRecognizers>
                                 <HorizontalStackLayout Padding="10" Spacing="5">
                                     <Label Text="{Binding Make}"></Label>
                                     <Label Text="{Binding Model}"></Label>
                                 </HorizontalStackLayout>
                             </Frame>
+                            <HorizontalStackLayout
+                                Grid.Column="1">
+                                <Button 
+                                    Text="Update"
+                                    IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarDetailsViewModel}}, Path=IsNotLoading}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarDetailsViewModel}}, Path=UpdateCarCommand}"
+                                    CommandParameter="{Binding Id}"
+                                    Margin="9" />
+                                
+                                <Button 
+                                    Text="Delete"
+                                    IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarDetailsViewModel}}, Path=IsNotLoading}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarDetailsViewModel}}, Path=DeleteCarCommand}"
+                                    CommandParameter="{Binding Id}"
+                                    Margin="9" />
+                            </HorizontalStackLayout>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
             
         </RefreshView>
-        
 
-        <Button 
-            Text="Fecth Cars"
-            Command="{Binding GetCarsCommand}"
-            IsEnabled="{Binding IsNotLoading}"
-            Grid.Row="1"
-            Grid.Column="0"
-            Margin="9"/>
     </Grid>
     
 </ContentPage>

@@ -8,6 +8,7 @@ public class CarService
 {
     private SQLiteConnection _conn;
     string _dbPath;
+    int result;
 
     public string StatusMessage;
 
@@ -30,6 +31,56 @@ public class CarService
         }
 
         return new List<Car>();
+    }
+
+    public Car GetCar(int id) 
+    {
+        try
+        {
+            Init();
+
+            return _conn.Table<Car>().FirstOrDefault(x => x.Id == id);
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = "Failed to Retrieve Data.";
+        }
+
+        return null;
+    }
+
+    public void AddCar(Car car)
+    {
+        try
+        {
+            Init();
+
+            if (car is null) throw new Exception("Null Car Record");
+
+            result = _conn.Insert(car);
+
+            StatusMessage = result == 0 ? "Insert Failed" : "Insert Successful";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = "Failed to Insert Data.";
+        }
+    }
+
+    public int DeleteCar(int id)
+    {
+        try
+        {
+            Init();
+
+            return _conn.Table<Car>().Delete(x => x.Id == id);
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = "Failed to Delete Data.";
+
+            return 0;
+        }
     }
 
     private void Init()

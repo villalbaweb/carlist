@@ -24,6 +24,60 @@ public partial class CarListViewModel : BaseViewModel
     [ObservableProperty]
     bool isRefreshing;
 
+	[ObservableProperty]
+	string make;
+
+	[ObservableProperty]
+	string model;
+
+	[ObservableProperty]
+	string vin;
+
+	[RelayCommand]
+	async Task AddCarAsync()
+	{
+		if (string.IsNullOrEmpty(Make) || string.IsNullOrEmpty(Model) || string.IsNullOrEmpty(Vin))
+		{
+			await Shell.Current.DisplayAlert("Invalid Data", "Please insert valid data", "OK");
+		}
+
+		Car car = new Car
+		{
+			Make = Make,
+			Model = Model,
+			Vin = Vin
+		};
+
+		_carService.AddCar(car);
+        await Shell.Current.DisplayAlert("Info", _carService.StatusMessage, "OK");
+		await GetCarsAsync();
+    }
+
+	[RelayCommand]
+	async Task UpdateCarAsync(int id)
+	{
+		await Task.CompletedTask;
+	}
+
+    [RelayCommand]
+	async Task DeleteCarAsync(int id)
+	{
+		if(id==0)
+		{
+            await Shell.Current.DisplayAlert("Invalid Id", "Please try again", "OK");
+        }
+
+		int result = _carService.DeleteCar(id);
+
+		if (result == 0)
+            await Shell.Current.DisplayAlert("Deletion Failed", "Please insert valid data", "OK");
+		else
+		{
+            await Shell.Current.DisplayAlert("Deletion Successful", "Record Removed Successfully", "OK");
+			await GetCarsAsync();
+        }
+    }
+
     [RelayCommand]
 	async Task GetCarsAsync()
 	{
@@ -57,16 +111,12 @@ public partial class CarListViewModel : BaseViewModel
 	}
 
 	[RelayCommand]
-	async Task GetCarDetailsAsync(Car car)
+	async Task GetCarDetailsAsync(int id)
 	{
-		if(car is null) return;
+		if(id == 0) return;
 
 		await Shell.Current.GoToAsync(		// Probably this can be abstracted away to a Navigation Interface
-			nameof(CarDetailsPage), 
-			true, 
-			new Dictionary<string, object>
-			{
-				{nameof(Car), car},
-			});
+			$"{ nameof(CarDetailsPage) }?Id={id}", 
+			true);
 	}
 }
