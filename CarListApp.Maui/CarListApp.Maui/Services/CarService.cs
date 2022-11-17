@@ -67,6 +67,24 @@ public class CarService
         }
     }
 
+    public void UpdateCar(Car car)
+    {
+        try
+        {
+            Init();
+
+            if (car is null) throw new Exception("Null Car Record");
+
+            result = _conn.Update(car);
+
+            StatusMessage = result == 0 ? "Update Failed" : "Update Successful";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = "Failed to Update Data.";
+        }
+    }
+
     public int DeleteCar(int id)
     {
         try

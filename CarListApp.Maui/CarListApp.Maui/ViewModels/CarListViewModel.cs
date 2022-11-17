@@ -3,16 +3,20 @@ using CarListApp.Maui.Services;
 using CarListApp.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 namespace CarListApp.Maui.ViewModels;
 
 public partial class CarListViewModel : BaseViewModel
 {
-	private readonly CarService _carService;
+	const string EDIT_BTN_TXT = "Update Car";
+	const string CREATE_BTN_TXT = "Add Car";
 
-	public ObservableCollection<Car> Cars { get; private set; } = new ();
+	private readonly CarService _carService;
+	private bool isUpdateMode;
+	private int carId;
+
 
 	public CarListViewModel(CarService carService)
 	{
@@ -20,6 +24,9 @@ public partial class CarListViewModel : BaseViewModel
 
 		_carService = carService;
 	}
+	
+	
+	public ObservableCollection<Car> Cars { get; private set; } = new ();
 
     [ObservableProperty]
     bool isRefreshing;
@@ -33,26 +40,39 @@ public partial class CarListViewModel : BaseViewModel
 	[ObservableProperty]
 	string vin;
 
+	[ObservableProperty]
+	string addUpdateModeText;
+
+	
 	[RelayCommand]
-	async Task AddCarAsync()
+	async Task SaveCarAsync()
 	{
 		if (string.IsNullOrEmpty(Make) || string.IsNullOrEmpty(Model) || string.IsNullOrEmpty(Vin))
 		{
 			await Shell.Current.DisplayAlert("Invalid Data", "Please insert valid data", "OK");
+			return;
 		}
 
-		Car car = new Car
-		{
-			Make = Make,
-			Model = Model,
-			Vin = Vin
-		};
+        Car car = new Car
+        {
+			Id= carId,
+            Make = Make,
+            Model = Model,
+            Vin = Vin
+        };
 
-		_carService.AddCar(car);
+        if (isUpdateMode)
+		{
+			_carService.UpdateCar(car);
+		}
+		else
+		{
+            _carService.AddCar(car);
+        }
+
         await Shell.Current.DisplayAlert("Info", _carService.StatusMessage, "OK");
 		await GetCarsAsync();
     }
-
 
     [RelayCommand]
 	async Task DeleteCarAsync(int id)
@@ -117,6 +137,18 @@ public partial class CarListViewModel : BaseViewModel
     [RelayCommand]
     async Task SetEditModeAsync(int id)
     {
-        await Shell.Current.DisplayAlert("Info", $"Updating id - {id}.", "OK");
+		if (id == 0) return;
+
+		isUpdateMode = true;
+
+		AddUpdateModeText = EDIT_BTN_TXT;
+
+        Car car = _carService.GetCar(id);
+
+		carId = car.Id;
+		Make = car.Make;
+		Model = car.Model;
+		Vin = car.Vin;
+
     }
 }

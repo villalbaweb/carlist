@@ -32,10 +32,10 @@
         </VerticalStackLayout>
 
         <Button 
-            Text="Add Car"
+            Text="{Binding AddUpdateModeText}"
             Grid.Row="1"
             IsEnabled="{Binding IsNotLoading}"
-            Command="{Binding AddCarCommand}"
+            Command="{Binding SaveCarCommand}"
             Margin="9" />
 
         <Button 
