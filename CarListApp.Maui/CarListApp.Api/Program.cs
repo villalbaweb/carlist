@@ -31,24 +31,40 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.MapGet("/cars", async (CarListDbContext db) => await db.Cars.ToListAsync());
+app.MapGet("/cars/{id}", async (CarListDbContext db, int id) => await db.Cars.FindAsync(id) is Car car ? Results.Ok(car) : Results.NotFound());
 
-app.MapGet("/weatherforecast", () =>
+app.MapPut("/cars/{id}", async (CarListDbContext db, int id, Car car) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateTime.Now.AddDays(index),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    var record = await db.Cars.FindAsync(id);
+    if (record is null) return Results.NotFound();
+
+    record.Model = car.Model;
+    record.Make = car.Make;
+    record.Vin = car.Vin;
+
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+});
+
+app.MapDelete("/cars/{id}", async (CarListDbContext db, int id) =>
+{
+    var record = await db.Cars.FindAsync(id);
+    if (record is null) return Results.NotFound();
+
+    db.Remove(record);
+    await db.SaveChangesAsync();
+
+    return Results.NoContent();
+});
+
+app.MapPost("/cars", async (CarListDbContext db, Car car) =>
+{
+    await db.AddAsync(car);
+    await db.SaveChangesAsync();
+    
+    return Results.Created($"/cars/{car.Id}", car);
+});
 
 app.Run();
 
