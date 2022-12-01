@@ -15,18 +15,25 @@ builder.Services.AddCors(o =>
         .AllowAnyMethod());
 });
 
+// local running
 var dbPath = Path.Join(Directory.GetCurrentDirectory(), "carlist.db");
 var conn = new SqliteConnection($"Data Source={dbPath}");
+
+// azure deployment
+//var conn = new SqliteConnection("Data Source=carlist.db");
+
 builder.Services.AddDbContext<CarListDbContext>(o => o.UseSqlite(conn));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+//Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+
 //}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");

@@ -4,7 +4,7 @@ public class CarListDbContext : DbContext
 {
 	public CarListDbContext(DbContextOptions<CarListDbContext> options) : base(options)
 	{
-
+        Database.EnsureCreated();
 	}
 
 	public DbSet<Car> Cars { get; set; }
