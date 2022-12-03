@@ -12,16 +12,17 @@ public partial class CarListViewModel : BaseViewModel
 	const string EDIT_BTN_TXT = "Update Car";
 	const string CREATE_BTN_TXT = "Add Car";
 
-	private readonly CarService _carService;
+	private readonly CarServiceApi _carServiceApi;
 	private bool isUpdateMode;
 	private int carId;
+	private string message;
 
 
-	public CarListViewModel(CarService carService)
+	public CarListViewModel(CarServiceApi carServiceApi)
 	{
 		Title = "CarList";
 
-		_carService = carService;
+		_carServiceApi = carServiceApi;
 
 		AddUpdateModeText = CREATE_BTN_TXT;
 	}
@@ -64,14 +65,14 @@ public partial class CarListViewModel : BaseViewModel
 
         if (isUpdateMode)
 		{
-			_carService.UpdateCar(car);
+			await _carServiceApi.UpdateCar(carId, car);
 		}
 		else
 		{
-            _carService.AddCar(car);
+            await _carServiceApi.AddCar(car);
         }
 
-        await Shell.Current.DisplayAlert("Info", _carService.StatusMessage, "OK");
+        await Shell.Current.DisplayAlert("Info", _carServiceApi.StatusMessage, "OK");
 		await GetCarsAsync();
 		await ClearForm();
     }
@@ -84,15 +85,11 @@ public partial class CarListViewModel : BaseViewModel
             await Shell.Current.DisplayAlert("Invalid Id", "Please try again", "OK");
         }
 
-		int result = _carService.DeleteCar(id);
+		await _carServiceApi.DeleteCar(id);
+		message = _carServiceApi.StatusMessage;
 
-		if (result == 0)
-            await Shell.Current.DisplayAlert("Deletion Failed", "Please insert valid data", "OK");
-		else
-		{
-            await Shell.Current.DisplayAlert("Deletion Successful", "Record Removed Successfully", "OK");
-			await GetCarsAsync();
-        }
+		await Shell.Current.DisplayAlert("Info", message, "OK");
+        await GetCarsAsync();
     }
 
     [RelayCommand]
@@ -107,7 +104,7 @@ public partial class CarListViewModel : BaseViewModel
 
 			if (Cars.Any()) Cars.Clear();
 
-			var cars = _carService.GetCars();
+			var cars = await _carServiceApi.GetCars();
 			foreach(var car in cars)
 			{
 				Cars.Add(car);
@@ -145,7 +142,7 @@ public partial class CarListViewModel : BaseViewModel
 
 		AddUpdateModeText = EDIT_BTN_TXT;
 
-        Car car = _carService.GetCar(id);
+        Car car = await _carServiceApi.GetCar(id);
 
 		carId = car.Id;
 		Make = car.Make;

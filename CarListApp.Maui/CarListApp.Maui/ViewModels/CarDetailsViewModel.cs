@@ -8,7 +8,9 @@ namespace CarListApp.Maui.ViewModels;
 [QueryProperty(nameof(Id), nameof(Id))]
 public partial class CarDetailsViewModel : BaseViewModel, IQueryAttributable
 {
-    private readonly CarService _carService;
+
+
+    private readonly CarServiceApi _carServiceApi;
 
 
     [ObservableProperty]
@@ -17,14 +19,24 @@ public partial class CarDetailsViewModel : BaseViewModel, IQueryAttributable
     [ObservableProperty]
     int id;
 
-    public CarDetailsViewModel(CarService carService)
+    public CarDetailsViewModel(CarServiceApi carServiceApi)
     {
-        _carService= carService;
+        _carServiceApi= carServiceApi;
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         Id = Convert.ToInt32(HttpUtility.UrlDecode(query[nameof(Id)].ToString()));
-        Car = _carService.GetCar(id);
+    }
+
+    /// <summary>
+    /// Created so that it can be called from the view itself 
+    /// OnAppearing() this is required to make the CarServiceApi call async, that cannot be don
+    /// with in the ApplyQueryAttributes since its pretty much synchronous.
+    /// </summary>
+    /// <returns></returns>
+    public async Task GetCarData()
+    {
+        Car = await _carServiceApi.GetCar(Id);
     }
 }

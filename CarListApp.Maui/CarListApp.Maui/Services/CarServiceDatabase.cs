@@ -4,7 +4,7 @@ using SQLite;
 namespace CarListApp.Maui.Services;
 
 // Daniel: this will be abstracted away behind an interface
-public class CarService
+public class CarServiceDatabase
 {
     private SQLiteConnection _conn;
     string _dbPath;
@@ -12,7 +12,7 @@ public class CarService
 
     public string StatusMessage;
 
-    public CarService(string dbPath)
+    public CarServiceDatabase(string dbPath)
     {
         _dbPath = dbPath;
     }
