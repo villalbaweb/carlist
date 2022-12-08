@@ -1,5 +1,10 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +29,36 @@ var conn = new SqliteConnection($"Data Source={dbPath}");
 
 builder.Services.AddDbContext<CarListDbContext>(o => o.UseSqlite(conn));
 
+builder.Services.AddIdentityCore<IdentityUser>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<CarListDbContext>();
+
+builder.Services.AddAuthentication(oprions =>
+{
+    oprions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    oprions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]))
+    };
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+    .RequireAuthenticatedUser()
+    .Build();
+});
+
 var app = builder.Build();
 
 //Configure the HTTP request pipeline.
@@ -36,6 +71,10 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseCors("AllowAll");
 
 app.MapGet("/cars", async (CarListDbContext db) => await db.Cars.ToListAsync());
@@ -73,9 +112,24 @@ app.MapPost("/cars", async (CarListDbContext db, Car car) =>
     return Results.Created($"/cars/{car.Id}", car);
 });
 
+app.MapPost("/login", async (LoginDto loginDto, CarListDbContext db, UserManager<IdentityUser> _userManager) => 
+{
+    var user = await _userManager.FindByNameAsync(loginDto.Username);
+
+    if (user is null) return Results.Unauthorized();
+
+    var isValidPassword = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+
+    if(!isValidPassword) return Results.Unauthorized();
+
+    // Generate Access Token
+
+    var response = new AuthResponseDto(user.Id, user.UserName, "AccessTokenHere");
+
+    return Results.Ok(response);
+}).AllowAnonymous();
+
 app.Run();
 
-internal record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+internal record LoginDto(string Username, string Password);
+internal record AuthResponseDto(string UserId, string Username, string Token);
