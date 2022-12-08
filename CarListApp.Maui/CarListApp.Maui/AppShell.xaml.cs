@@ -10,5 +10,7 @@ public partial class AppShell : Shell
 
 		// This is just top Register a new Navigation Route within the AppShell
 		Routing.RegisterRoute(nameof(CarDetailsPage), typeof(CarDetailsPage));
-	}
+        Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+        Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
+    }
 }
