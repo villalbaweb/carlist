@@ -21,6 +21,7 @@ public class CarServiceApi
 	{
         try
         {
+            await SetAuthToken();
             var response = await _httpClient.GetStringAsync("/cars");
             var cars = JsonSerializer.Deserialize<List<Car>>(response);
             return cars;
@@ -89,5 +90,30 @@ public class CarServiceApi
         {
             StatusMessage = "Failed to Delete data.";
         }
+    }
+
+    public async Task<AuthResponseModel> Login(LoginModel loginModel)
+    {
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("/login", loginModel);
+            response.EnsureSuccessStatusCode();
+            StatusMessage = "Login Successful";
+
+            return JsonSerializer.Deserialize<AuthResponseModel>(await response.Content.ReadAsStringAsync());
+
+        }
+        catch (Exception)
+        {
+            StatusMessage = "Failed to login successfully.";
+            return null;
+        }
+    }
+
+    public async Task SetAuthToken()
+    {
+        var token = await SecureStorage.GetAsync("Token");
+
+        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
     }
 }
