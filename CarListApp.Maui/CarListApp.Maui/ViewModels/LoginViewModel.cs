@@ -46,7 +46,7 @@ public partial class LoginViewModel : BaseViewModel
                 // display welcome message
             await DisplayLoginMessage(_carServiceApi.StatusMessage);
 
-            if (!string.IsNullOrEmpty(response.Token))
+            if (response is not null && !string.IsNullOrEmpty(response.Token))
             {
                 // store Token in secuire storage
                 await SecureStorage.SetAsync("Token", response.Token);
