@@ -7,14 +7,14 @@ public partial class LoadingPageViewModel : BaseViewModel
 		CheckUserLoginDetails();
 	}
 
-    private async void CheckUserLoginDetails()
+    private async Task CheckUserLoginDetails()
     {
         // Retrieve token from internal storage
-        var token = await SecureStorage.GetAsync("Token");
+        string token = await SecureStorage.GetAsync("Token");
 
         if(string.IsNullOrEmpty(token))
         {
-            await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
+            await GoToLoginPage();
         }
 
         // Evaluate token and decide if valid

@@ -1,9 +1,12 @@
+using CarListApp.Maui.ViewModels;
+
 namespace CarListApp.Maui;
 
-public partial class LoginPage : ContentView
+public partial class LoginPage : ContentPage
 {
-	public LoginPage()
+	public LoginPage(LoginViewModel loginViewModel)
 	{
 		InitializeComponent();
+		BindingContext= loginViewModel;
 	}
 }
