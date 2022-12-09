@@ -23,11 +23,11 @@ builder.Services.AddCors(o =>
 });
 
 // local running
-var dbPath = Path.Join(Directory.GetCurrentDirectory(), "carlist.db");
-var conn = new SqliteConnection($"Data Source={dbPath}");
+//var dbPath = Path.Join(Directory.GetCurrentDirectory(), "carlist.db");
+//var conn = new SqliteConnection($"Data Source={dbPath}");
 
-// azure deployment
-//var conn = new SqliteConnection("Data Source=carlist.db");
+// azure deployment to REST API App Service
+var conn = new SqliteConnection("Data Source=carlist.db");
 
 builder.Services.AddDbContext<CarListDbContext>(o => o.UseSqlite(conn));
 

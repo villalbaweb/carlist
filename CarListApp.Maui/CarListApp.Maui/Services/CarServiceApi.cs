@@ -100,10 +100,11 @@ public class CarServiceApi
             response.EnsureSuccessStatusCode();
             StatusMessage = "Login Successful";
 
-            return JsonSerializer.Deserialize<AuthResponseModel>(await response.Content.ReadAsStringAsync());
+            var responseContentString = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<AuthResponseModel>(responseContentString);
 
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             StatusMessage = "Failed to login successfully.";
             return null;
