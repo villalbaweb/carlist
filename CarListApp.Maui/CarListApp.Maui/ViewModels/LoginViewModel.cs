@@ -1,22 +1,27 @@
-﻿using CarListApp.Maui.Models;
+﻿using CarListApp.Maui.Helpers;
+using CarListApp.Maui.Models;
 using CarListApp.Maui.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Maui.Storage;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace CarListApp.Maui.ViewModels;
 
 public partial class LoginViewModel : BaseViewModel
 {
     private readonly CarServiceApi _carServiceApi;
+    private readonly UserInfoHelper _userInfoHelper;
+    private readonly MenuBuildHelper _menuBuildHelper;
 
-    public LoginViewModel(CarServiceApi carServiceApi)
+    public LoginViewModel(
+        CarServiceApi carServiceApi,
+        UserInfoHelper userInfoHelper,
+        MenuBuildHelper menuBuildHelper)
     {
         _carServiceApi = carServiceApi;
+        _userInfoHelper = userInfoHelper;
+        _menuBuildHelper = menuBuildHelper;
     }
 
     [ObservableProperty]
@@ -60,15 +65,10 @@ public partial class LoginViewModel : BaseViewModel
                     Role = jsonToken.Claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.Role)).Value
                 };
 
-                if(Preferences.ContainsKey(nameof(UserInfo)))
-                {
-                    Preferences.Remove(nameof(UserInfo));
-                }
-
-                string userInfoString = JsonSerializer.Serialize(userInfo);
-                Preferences.Set(nameof(UserInfo), userInfoString);
+                _userInfoHelper.SetUserInfoToPreferences(userInfo);
 
                 // navigate to apps main page
+                _menuBuildHelper.BuildMenu();
                 await Shell.Current.GoToAsync($"{nameof(MainPage)}");
             }
             else
