@@ -1,5 +1,6 @@
 ﻿using CarListApp.Maui.Helpers;
 using CarListApp.Maui.Models;
+using CarListApp.Maui.Views;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 

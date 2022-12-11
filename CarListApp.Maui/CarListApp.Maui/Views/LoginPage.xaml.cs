@@ -1,6 +1,6 @@
 using CarListApp.Maui.ViewModels;
 
-namespace CarListApp.Maui;
+namespace CarListApp.Maui.Views;
 
 public partial class LoginPage : ContentPage
 {
