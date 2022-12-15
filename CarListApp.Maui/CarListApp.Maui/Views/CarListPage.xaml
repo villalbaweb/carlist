@@ -1,12 +1,12 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CarListApp.Maui.MainPage"
-             x:DataType ="viewmodel:CarListViewModel"
-             xmlns:model ="clr-namespace:CarListApp.Maui.Models"
-             xmlns:viewmodel ="clr-namespace:CarListApp.Maui.ViewModels"
-             Title="{Binding Title}">
-
+             xmlns:model="clr-namespace:CarListApp.Maui.Models"
+             xmlns:viewmodel="clr-namespace:CarListApp.Maui.ViewModels"
+             x:Class="CarListApp.Maui.Views.CarListPage"
+             x:DataType="viewmodel:CarListViewModel"
+             Title="CarListPage">
+    
     <Grid
         ColumnSpacing="1"
         RowSpacing="1"
@@ -89,7 +89,7 @@
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarListViewModel}}, Path=SetEditModeCommand}"
                                     CommandParameter="{Binding Id}"
                                     Margin="9" />
-                                
+
                                 <Button 
                                     Text="Delete"
                                     IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarListViewModel}}, Path=IsNotLoading}"
@@ -101,7 +101,7 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            
+
         </RefreshView>
 
     </Grid>

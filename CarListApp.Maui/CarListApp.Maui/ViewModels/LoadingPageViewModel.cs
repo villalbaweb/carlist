@@ -49,7 +49,7 @@ public partial class LoadingPageViewModel : BaseViewModel
 
                 _userInfoHelper.SetUserInfoToPreferences(userInfo);
                 _menuBuildHelper.BuildMenu();
-                await GoToMainPage();
+                await GoToCarListPage();
             }
         }
 
@@ -62,8 +62,8 @@ public partial class LoadingPageViewModel : BaseViewModel
         await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
     }
 
-    private async Task GoToMainPage()
+    private async Task GoToCarListPage()
     {
-        await Shell.Current.GoToAsync($"{nameof(MainPage)}");
+        await Shell.Current.GoToAsync($"{nameof(CarListPage)}");
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CarListApp.Maui.Helpers;
 using CarListApp.Maui.Models;
 using CarListApp.Maui.Services;
+using CarListApp.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.IdentityModel.Tokens.Jwt;
@@ -69,7 +70,7 @@ public partial class LoginViewModel : BaseViewModel
 
                 // navigate to apps main page
                 _menuBuildHelper.BuildMenu();
-                await Shell.Current.GoToAsync($"{nameof(MainPage)}");
+                await Shell.Current.GoToAsync($"{nameof(CarListPage)}");
             }
             else
                 await DisplayLoginMessage("Invalid Login Attempt");

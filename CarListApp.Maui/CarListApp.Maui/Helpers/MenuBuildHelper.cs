@@ -1,5 +1,6 @@
 ﻿using CarListApp.Maui.Controls;
 using CarListApp.Maui.Models;
+using CarListApp.Maui.Views;
 
 namespace CarListApp.Maui.Helpers;
 
@@ -25,7 +26,7 @@ public class MenuBuildHelper
             var flyOutItem = new FlyoutItem()
             {
                 Title = "Admin Car Management",
-                Route = nameof(MainPage),
+                Route = nameof(CarListPage),
                 FlyoutDisplayOptions = FlyoutDisplayOptions.AsMultipleItems,
                 Items = 
                 {
@@ -33,13 +34,13 @@ public class MenuBuildHelper
                     {
                         Icon = "dotnet_bot.svg",
                         Title = "Admin Page 1",
-                        ContentTemplate = new DataTemplate(typeof(MainPage))
+                        ContentTemplate = new DataTemplate(typeof(CarListPage))
                     },
                     new ShellContent
                     {
                         Icon = "dotnet_bot.svg",
                         Title = "Admin Page 2",
-                        ContentTemplate = new DataTemplate(typeof(MainPage))
+                        ContentTemplate = new DataTemplate(typeof(CarListPage))
                     }
                 }
             };
@@ -55,7 +56,7 @@ public class MenuBuildHelper
             var flyOutItem = new FlyoutItem()
             {
                 Title = "User Car Management",
-                Route = nameof(MainPage),
+                Route = nameof(CarListPage),
                 FlyoutDisplayOptions = FlyoutDisplayOptions.AsMultipleItems,
                 Items =
                 {
@@ -63,13 +64,13 @@ public class MenuBuildHelper
                     {
                         Icon = "dotnet_bot.svg",
                         Title = "User Page 1",
-                        ContentTemplate = new DataTemplate(typeof(MainPage))
+                        ContentTemplate = new DataTemplate(typeof(CarListPage))
                     },
                     new ShellContent
                     {
                         Icon = "dotnet_bot.svg",
                         Title = "User Page 2",
-                        ContentTemplate = new DataTemplate(typeof(MainPage))
+                        ContentTemplate = new DataTemplate(typeof(CarListPage))
                     }
                 }
             };
