@@ -1,9 +1,10 @@
-﻿using CarListApp.Maui.Models;
+﻿using CarListApp.Maui.Interfaces.Helpers;
+using CarListApp.Maui.Models;
 using System.Text.Json;
 
 namespace CarListApp.Maui.Helpers;
 
-public class UserInfoHelper
+public class UserInfoHelper : IUserInfoHelper
 {
     public UserInfo GetUserInfoFromPreferences()
     {

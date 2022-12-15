@@ -1,4 +1,5 @@
 ﻿using CarListApp.Maui.Helpers;
+using CarListApp.Maui.Interfaces.Helpers;
 using CarListApp.Maui.Models;
 using CarListApp.Maui.Services;
 using CarListApp.Maui.Views;
@@ -12,13 +13,13 @@ namespace CarListApp.Maui.ViewModels;
 public partial class LoginViewModel : BaseViewModel
 {
     private readonly CarServiceApi _carServiceApi;
-    private readonly UserInfoHelper _userInfoHelper;
-    private readonly MenuBuildHelper _menuBuildHelper;
+    private readonly IUserInfoHelper _userInfoHelper;
+    private readonly IMenuBuildHelper _menuBuildHelper;
 
     public LoginViewModel(
         CarServiceApi carServiceApi,
-        UserInfoHelper userInfoHelper,
-        MenuBuildHelper menuBuildHelper)
+        IUserInfoHelper userInfoHelper,
+        IMenuBuildHelper menuBuildHelper)
     {
         _carServiceApi = carServiceApi;
         _userInfoHelper = userInfoHelper;

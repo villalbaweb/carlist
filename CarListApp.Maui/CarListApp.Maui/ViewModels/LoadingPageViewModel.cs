@@ -1,4 +1,5 @@
 ﻿using CarListApp.Maui.Helpers;
+using CarListApp.Maui.Interfaces.Helpers;
 using CarListApp.Maui.Models;
 using CarListApp.Maui.Views;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,12 +9,12 @@ namespace CarListApp.Maui.ViewModels;
 
 public partial class LoadingPageViewModel : BaseViewModel
 {
-    private readonly MenuBuildHelper _menuBuildHelper;
-    private readonly UserInfoHelper _userInfoHelper;
+    private readonly IMenuBuildHelper _menuBuildHelper;
+    private readonly IUserInfoHelper _userInfoHelper;
 
 	public LoadingPageViewModel(
-        MenuBuildHelper menuBuildHelper,
-        UserInfoHelper userInfoHelper)
+        IMenuBuildHelper menuBuildHelper,
+        IUserInfoHelper userInfoHelper)
 	{
         _menuBuildHelper = menuBuildHelper;
         _userInfoHelper = userInfoHelper;

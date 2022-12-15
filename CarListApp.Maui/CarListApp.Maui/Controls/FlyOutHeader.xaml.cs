@@ -1,13 +1,14 @@
 using CarListApp.Maui.Helpers;
+using CarListApp.Maui.Interfaces.Helpers;
 using CarListApp.Maui.Models;
 
 namespace CarListApp.Maui.Controls;
 
 public partial class FlyOutHeader : StackLayout
 {
-	private readonly UserInfoHelper _userInfoHelper;
+	private readonly IUserInfoHelper _userInfoHelper;
 
-	public FlyOutHeader(UserInfoHelper userInfoHelper)
+	public FlyOutHeader(IUserInfoHelper userInfoHelper)
 	{
 		InitializeComponent();
 

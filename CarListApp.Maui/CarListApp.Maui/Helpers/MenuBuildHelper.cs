@@ -1,14 +1,15 @@
 ﻿using CarListApp.Maui.Controls;
+using CarListApp.Maui.Interfaces.Helpers;
 using CarListApp.Maui.Models;
 using CarListApp.Maui.Views;
 
 namespace CarListApp.Maui.Helpers;
 
-public class MenuBuildHelper
+public class MenuBuildHelper : IMenuBuildHelper
 {
-    private readonly UserInfoHelper _userInfoHelper;
+    private readonly IUserInfoHelper _userInfoHelper;
 
-    public MenuBuildHelper(UserInfoHelper userInfoHelper)
+    public MenuBuildHelper(IUserInfoHelper userInfoHelper)
     {
         _userInfoHelper = userInfoHelper;
     }
