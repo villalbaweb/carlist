@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using CarListApp.Api.Core.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
@@ -27,11 +28,6 @@ internal static class ServiceCollectionExtension
 
     internal static void ConfigureDbBehavior(this IServiceCollection services)
     {
-        // local running
-        //var dbPath = Path.Join(Directory.GetCurrentDirectory(), "carlist.db");
-        //var conn = new SqliteConnection($"Data Source={dbPath}");
-
-        // azure deployment to REST API App Service
         var conn = new SqliteConnection("Data Source=carlist.db");
 
         services.AddDbContext<CarListDbContext>(o => o.UseSqlite(conn));

@@ -1,5 +1,6 @@
 using CarListApp.Api.Configuration.Endpoints;
 using CarListApp.Api.Configuration.ServiceCollection;
+using CarListApp.Api.Core.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,13 +26,3 @@ app.RegisterAuthEndpoints(jwtSettings);
 app.RegisterCarEndpoints();
 
 app.Run();
-
-internal record LoginDto(string Username, string Password);
-internal record AuthResponseDto(string UserId, string Username, string Token);
-public record JwtSettings
-{
-    public string Issuer { get; set; }
-    public string Audience { get; set; }
-    public string Key { get; set; }
-    public int DurationInMinutes { get; set; }
-}

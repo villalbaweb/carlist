@@ -5,7 +5,9 @@ VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarListApp.Maui", "CarListApp.Maui\CarListApp.Maui.csproj", "{1569E79B-AD02-4743-BD86-66BA57DF8C78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarListApp.Api", "CarListApp.Api\CarListApp.Api.csproj", "{80B5BF67-40C9-4A67-9806-989A66F996D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarListApp.Api", "CarListApp.Api\CarListApp.Api.csproj", "{80B5BF67-40C9-4A67-9806-989A66F996D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarListApp.Api.Core", "CarListApp.Api.Core\CarListApp.Api.Core.csproj", "{BEC2BC82-2289-41C0-B17D-083432558F32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{80B5BF67-40C9-4A67-9806-989A66F996D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80B5BF67-40C9-4A67-9806-989A66F996D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80B5BF67-40C9-4A67-9806-989A66F996D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEC2BC82-2289-41C0-B17D-083432558F32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEC2BC82-2289-41C0-B17D-083432558F32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEC2BC82-2289-41C0-B17D-083432558F32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEC2BC82-2289-41C0-B17D-083432558F32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
