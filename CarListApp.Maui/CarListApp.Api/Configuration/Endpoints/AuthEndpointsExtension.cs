@@ -1,5 +1,6 @@
 ﻿using CarListApp.Api.Core.Dto;
 using CarListApp.Api.Core.Settings;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,7 +13,10 @@ internal static class AuthEndpointsExtension
 {
     internal static void RegisterAuthEndpoints(this IEndpointRouteBuilder endpoints, JwtSettings jwtSettings)
     {
-        endpoints.MapPost("/login", async (LoginDto loginDto, CarListDbContext db, UserManager<IdentityUser> _userManager) =>
+        endpoints.MapPost("/login", async (
+            LoginDto loginDto, 
+            CarListDbContext db, 
+            UserManager<IdentityUser> _userManager) =>
         {
             var user = await _userManager.FindByNameAsync(loginDto.Username);
 
@@ -29,12 +33,12 @@ internal static class AuthEndpointsExtension
             var roles = await _userManager.GetRolesAsync(user);
             var claims = await _userManager.GetClaimsAsync(user);
             var tokenClaims = new List<Claim>
-    {
-        new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        new Claim(JwtRegisteredClaimNames.Email, user.Email),
-        new Claim("email_confirmed", user.EmailConfirmed.ToString())
-    }
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim("email_confirmed", user.EmailConfirmed.ToString())
+            }
             .Union(claims)
             .Union(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
@@ -51,6 +55,21 @@ internal static class AuthEndpointsExtension
             var response = new AuthResponseDto(user.Id, user.UserName, accessToken);
 
             return Results.Ok(response);
+        }).AllowAnonymous();
+
+        endpoints.MapPost("/register", async (
+            IValidator<IdentityUserDto> validator, 
+            IdentityUserDto identityUserDto, 
+            CarListDbContext db, 
+            UserManager<IdentityUser> _userManager) =>
+        {
+            var validationResult = await validator.ValidateAsync(identityUserDto);
+            if (!validationResult.IsValid)
+            {
+                return Results.ValidationProblem(validationResult.ToDictionary());
+            }
+
+            return Results.Ok();
         }).AllowAnonymous();
     }
 }

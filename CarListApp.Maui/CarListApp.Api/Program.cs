@@ -9,6 +9,7 @@ JwtSettings jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<Jw
 builder.Services.ConfigureSwaggerBehavior();
 builder.Services.ConfigureDbBehavior();
 builder.Services.ConfigureAuthBehavior(jwtSettings);
+builder.Services.RegisterDependencies();
 
 var app = builder.Build();
 

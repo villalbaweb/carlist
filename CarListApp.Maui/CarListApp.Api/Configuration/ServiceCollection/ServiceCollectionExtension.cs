@@ -1,4 +1,7 @@
-﻿using CarListApp.Api.Core.Settings;
+﻿using CarListApp.Api.Core.Dto;
+using CarListApp.Api.Core.Settings;
+using CarListApp.Api.DtoValidators;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -64,5 +67,10 @@ internal static class ServiceCollectionExtension
             .RequireAuthenticatedUser()
             .Build();
         });
+    }
+
+    internal static void RegisterDependencies(this IServiceCollection services)
+    {
+        services.AddScoped<IValidator<IdentityUserDto>, IdentityUserValidator>();
     }
 }
