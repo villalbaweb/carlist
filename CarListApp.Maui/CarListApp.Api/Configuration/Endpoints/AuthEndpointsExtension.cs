@@ -16,7 +16,6 @@ internal static class AuthEndpointsExtension
     {
         endpoints.MapPost("/login", async (
             LoginDto loginDto, 
-            CarListDbContext db, 
             UserManager<IdentityUser> _userManager) =>
         {
             var user = await _userManager.FindByNameAsync(loginDto.Username);
@@ -61,7 +60,6 @@ internal static class AuthEndpointsExtension
         endpoints.MapPost("/register", async (
             IValidator<IdentityUserDto> validator, 
             IdentityUserDto identityUserDto, 
-            CarListDbContext db, 
             UserManager<IdentityUser> _userManager) =>
         {
             var validationResult = await validator.ValidateAsync(identityUserDto);
@@ -103,5 +101,26 @@ internal static class AuthEndpointsExtension
 
             return Results.Created("URI to retrieve detail about the created user TODO", identityUser);
         }).AllowAnonymous();
+
+        endpoints.MapGet("/users", async(
+            string role,
+            UserManager<IdentityUser> _userManager,
+            IHttpContextAccessor _httpContextAccessor) =>
+        {
+            if (_httpContextAccessor.HttpContext is null) return Results.NotFound();
+
+            var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+
+            if(user is null) return Results.NotFound();
+
+            var roles = await _userManager.GetRolesAsync(user);
+            bool isAdmin = roles
+                .ToList()
+                .Exists(x => x.Equals("Administrator"));
+
+            if (!isAdmin) return Results.Unauthorized();
+
+            return Results.Ok(await _userManager.GetUsersInRoleAsync(role));
+        });
     }
 }
