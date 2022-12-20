@@ -11,8 +11,6 @@ public class IdentityUserValidator : AbstractValidator<IdentityUserDto>
 {
 	public IdentityUserValidator()
 	{
-        RuleFor(x => x.Id).NotEmpty();
-
         RuleFor(x => x.Email).NotEmpty().EmailAddress();
         
         RuleFor(x => x.UserName).NotNull();

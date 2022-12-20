@@ -2,6 +2,7 @@
 using CarListApp.Api.Core.Settings;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -69,9 +70,38 @@ internal static class AuthEndpointsExtension
                 return Results.ValidationProblem(validationResult.ToDictionary());
             }
 
-            // https://code-maze.com/user-registration-aspnet-core-identity/
+            IdentityUser identityUser = new IdentityUser();
+            identityUser.Email = identityUserDto.Email;
+            identityUser.NormalizedEmail = identityUserDto.Email.ToUpperInvariant();
+            identityUser.UserName = identityUserDto.UserName;
+            identityUser.NormalizedUserName = identityUserDto.UserName.ToUpperInvariant();
+            identityUser.EmailConfirmed = true;
 
-            return Results.Ok();
+            var result = await _userManager.CreateAsync(identityUser, identityUserDto.Password);
+            if(!result.Succeeded)
+            {
+                ProblemDetails problemDetails = new ProblemDetails
+                {
+                    Title = $"Problem detected while registering a new user {identityUserDto.UserName}.",
+                    Status = 406,
+                    Detail = "Please find details about specific attempt failure."
+                };
+
+                foreach(var error in result.Errors)
+                {
+                    problemDetails.Extensions.Add(error.Code, error.Description);
+                }
+
+                return Results.Problem(problemDetails);
+            }
+
+            string validatedRole = identityUserDto.Role == "Administrator"
+                ? "Administrator"
+                : "User";
+
+            await _userManager.AddToRoleAsync(identityUser, validatedRole);
+
+            return Results.Created("URI to retrieve detail about the created user TODO", identityUser);
         }).AllowAnonymous();
     }
 }
