@@ -69,6 +69,8 @@ internal static class AuthEndpointsExtension
                 return Results.ValidationProblem(validationResult.ToDictionary());
             }
 
+            // https://code-maze.com/user-registration-aspnet-core-identity/
+
             return Results.Ok();
         }).AllowAnonymous();
     }
