@@ -14,7 +14,7 @@ internal static class AuthEndpointsExtension
 {
     internal static void RegisterAuthEndpoints(this IEndpointRouteBuilder endpoints, JwtSettings jwtSettings)
     {
-        endpoints.MapPost("/login", async (
+        endpoints.MapPost("auth/login", async (
             LoginDto loginDto, 
             UserManager<IdentityUser> _userManager) =>
         {
@@ -57,7 +57,7 @@ internal static class AuthEndpointsExtension
             return Results.Ok(response);
         }).AllowAnonymous();
 
-        endpoints.MapPost("/register", async (
+        endpoints.MapPost("auth/register", async (
             IValidator<IdentityUserDto> validator, 
             IdentityUserDto identityUserDto, 
             UserManager<IdentityUser> _userManager) =>
@@ -102,7 +102,7 @@ internal static class AuthEndpointsExtension
             return Results.Created("URI to retrieve detail about the created user TODO", identityUser);
         }).AllowAnonymous();
 
-        endpoints.MapGet("/users", async(
+        endpoints.MapGet("auth/users", async(
             string role,
             UserManager<IdentityUser> _userManager,
             IHttpContextAccessor _httpContextAccessor) =>
