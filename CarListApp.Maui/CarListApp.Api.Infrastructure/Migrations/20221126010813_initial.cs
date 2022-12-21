@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace CarListApp.Api.Migrations
+namespace CarListApp.Api.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class initial : Migration

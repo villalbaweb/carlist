@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CarListApp.Api.Migrations
+namespace CarListApp.Api.Infrastructure.Migrations
 {
     [DbContext(typeof(CarListDbContext))]
     [Migration("20221208012148_AddedIdentityTables")]

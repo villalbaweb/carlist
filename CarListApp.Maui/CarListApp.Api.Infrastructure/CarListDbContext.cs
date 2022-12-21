@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CarListApp.Api.Core.ValueObjects;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
+namespace CarListApp.Api.Infrastructure;
 
 public class CarListDbContext : IdentityDbContext
 {

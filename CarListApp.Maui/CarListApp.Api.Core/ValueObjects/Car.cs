@@ -1,4 +1,6 @@
-﻿public class Car
+﻿namespace CarListApp.Api.Core.ValueObjects;
+
+public class Car
 {
     public int Id { get; set; }
 

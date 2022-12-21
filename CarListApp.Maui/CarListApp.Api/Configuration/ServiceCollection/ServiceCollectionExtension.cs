@@ -2,6 +2,7 @@
 using CarListApp.Api.Core.Dto;
 using CarListApp.Api.Core.Settings;
 using CarListApp.Api.DtoValidators;
+using CarListApp.Api.Infrastructure;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;

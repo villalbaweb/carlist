@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace CarListApp.Api.Migrations
+namespace CarListApp.Api.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class AddedIdentityTables : Migration
