@@ -96,7 +96,7 @@ public class CarServiceApi
     {
         try
         {
-            var response = await _httpClient.PostAsJsonAsync("/login", loginModel);
+            var response = await _httpClient.PostAsJsonAsync("/auth/login", loginModel);
             response.EnsureSuccessStatusCode();
             StatusMessage = "Login Successful";
 
