@@ -5,9 +5,10 @@ using CarListApp.Api.Core.Settings;
 var builder = WebApplication.CreateBuilder(args);
 
 JwtSettings jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+ConnectionStrings connectionStrings = builder.Configuration.GetSection("ConnectionStrings").Get<ConnectionStrings>();
 
 builder.Services.ConfigureSwaggerBehavior();
-builder.Services.ConfigureDbBehavior();
+builder.Services.ConfigureDbBehavior(connectionStrings);
 builder.Services.ConfigureAuthBehavior(jwtSettings);
 builder.Services.RegisterDependencies();
 

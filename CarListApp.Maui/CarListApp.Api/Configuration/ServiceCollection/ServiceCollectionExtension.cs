@@ -45,9 +45,9 @@ internal static class ServiceCollectionExtension
         });
     }
 
-    internal static void ConfigureDbBehavior(this IServiceCollection services)
+    internal static void ConfigureDbBehavior(this IServiceCollection services, ConnectionStrings connectionStrings)
     {
-        var conn = new SqliteConnection("Data Source=carlist.db");
+        var conn = new SqliteConnection(connectionStrings.SqiteConnString);
 
         services.AddDbContext<CarListDbContext>(o => o.UseSqlite(conn));
     }
