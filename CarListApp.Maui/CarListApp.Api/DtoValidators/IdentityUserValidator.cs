@@ -1,4 +1,4 @@
-﻿using CarListApp.Api.Core.Dto;
+﻿using CarListApp.Api.Core.Dtos;
 using FluentValidation;
 
 namespace CarListApp.Api.DtoValidators;

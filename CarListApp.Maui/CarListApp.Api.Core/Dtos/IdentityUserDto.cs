@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CarListApp.Api.Core.Dto;
+namespace CarListApp.Api.Core.Dtos;
 
 public record IdentityUserDto
 {

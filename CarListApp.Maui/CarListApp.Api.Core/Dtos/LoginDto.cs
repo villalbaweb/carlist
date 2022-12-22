@@ -1,3 +1,3 @@
-﻿namespace CarListApp.Api.Core.Dto;
+﻿namespace CarListApp.Api.Core.Dtos;
 
 public record LoginDto(string Username, string Password);

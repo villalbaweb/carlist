@@ -1,4 +1,5 @@
-﻿using CarListApp.Api.Core.Dto;
+﻿using CarListApp.Api.Core.Dtos;
+using CarListApp.Api.Core.Enums;
 using CarListApp.Api.Core.Settings;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
@@ -105,11 +106,9 @@ internal static class AuthEndpointsExtension
         endpoints.MapGet("auth/users", async(
             string role,
             UserManager<IdentityUser> _userManager,
-            IHttpContextAccessor _httpContextAccessor) =>
+            ClaimsPrincipal _user) =>
         {
-            if (_httpContextAccessor.HttpContext is null) return Results.NotFound();
-
-            var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+            var user = await _userManager.GetUserAsync(_user);
 
             if(user is null) return Results.NotFound();
 
@@ -120,7 +119,7 @@ internal static class AuthEndpointsExtension
 
             if (!isAdmin) return Results.Unauthorized();
 
-            return Results.Ok(await _userManager.GetUsersInRoleAsync(role));
+            return Results.Ok(await _userManager.GetUsersInRoleAsync(role.ToString()));
         });
     }
 }
