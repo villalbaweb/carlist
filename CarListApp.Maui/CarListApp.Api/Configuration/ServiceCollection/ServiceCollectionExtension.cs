@@ -1,8 +1,10 @@
 ﻿using CarListApp.Api.Configuration.Filters;
 using CarListApp.Api.Core.Dtos;
+using CarListApp.Api.Core.Interfaces;
 using CarListApp.Api.Core.Settings;
 using CarListApp.Api.DtoValidators;
 using CarListApp.Api.Infrastructure;
+using CarListApp.Api.Infrastructure.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -87,7 +89,13 @@ internal static class ServiceCollectionExtension
 
     internal static void RegisterDependencies(this IServiceCollection services)
     {
+        // DTO Validators
         services.AddScoped<IValidator<IdentityUserDto>, IdentityUserValidator>();
+        
+        // Generic Dependencies
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+        // Repositories
+        services.AddScoped<ICarRepository, CarRepository>();
     }
 }

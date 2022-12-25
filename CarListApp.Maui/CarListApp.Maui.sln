@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarListApp.Api", "CarListAp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarListApp.Api.Core", "CarListApp.Api.Core\CarListApp.Api.Core.csproj", "{BEC2BC82-2289-41C0-B17D-083432558F32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarListApp.Api.Infrastructure", "CarListApp.Api.Infrastructure\CarListApp.Api.Infrastructure.csproj", "{BF5D3A01-7D2A-46CA-BB6A-DFDC1D237A1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarListApp.Api.Infrastructure", "CarListApp.Api.Infrastructure\CarListApp.Api.Infrastructure.csproj", "{BF5D3A01-7D2A-46CA-BB6A-DFDC1D237A1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarListApp.Api.Service", "CarListApp.Api.Service\CarListApp.Api.Service.csproj", "{3421F106-233E-49CF-94CE-8B3692C624A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{BF5D3A01-7D2A-46CA-BB6A-DFDC1D237A1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF5D3A01-7D2A-46CA-BB6A-DFDC1D237A1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF5D3A01-7D2A-46CA-BB6A-DFDC1D237A1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3421F106-233E-49CF-94CE-8B3692C624A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3421F106-233E-49CF-94CE-8B3692C624A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3421F106-233E-49CF-94CE-8B3692C624A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3421F106-233E-49CF-94CE-8B3692C624A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
