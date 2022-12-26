@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.11" />
@@ -22,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CarListApp.Api.Core\CarListApp.Api.Core.csproj" />
     <ProjectReference Include="..\CarListApp.Api.Infrastructure\CarListApp.Api.Infrastructure.csproj" />
+    <ProjectReference Include="..\CarListApp.Api.Service\CarListApp.Api.Service.csproj" />
   </ItemGroup>
 
 </Project>

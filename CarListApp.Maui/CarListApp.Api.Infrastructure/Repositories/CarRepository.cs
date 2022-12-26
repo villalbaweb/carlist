@@ -1,5 +1,6 @@
 ﻿using CarListApp.Api.Core.Interfaces;
 using CarListApp.Api.Core.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarListApp.Api.Infrastructure.Repositories;
 
@@ -30,24 +31,37 @@ public class CarRepository : ICarRepository
         return car;
     }
 
-    public Task DeleteCarAsync(int id)
+    public async Task DeleteCarAsync(int id)
     {
-        throw new NotImplementedException();
+        var record = await _dbContext.Cars.FindAsync(id);
+        if(record is not null)
+        {
+            _dbContext.Remove(record);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 
-    public Task<Car> FindCarByIdAsync(int id)
+    public async Task<Car> GetCarByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Cars.FindAsync(id);
     }
 
-    public Task<List<Car>> GetCarListAsync()
+    public async Task<List<Car>> GetCarListAsync()
     {
-        throw new NotImplementedException();
+        return await _dbContext.Cars.ToListAsync();
     }
 
-    public Task UpdateCarAsync(int id, Car car)
+    public async Task UpdateCarAsync(int id, Car car)
     {
-        throw new NotImplementedException();
+        var record = await _dbContext.Cars.FindAsync(id);
+        if(record is not null)
+        {
+            record.Model = car.Model;
+            record.Make = car.Make;
+            record.Vin = car.Vin;
+
+            await _dbContext.SaveChangesAsync();
+        }
     }
 
     #endregion

@@ -5,7 +5,9 @@ using CarListApp.Api.Core.Settings;
 using CarListApp.Api.DtoValidators;
 using CarListApp.Api.Infrastructure;
 using CarListApp.Api.Infrastructure.Repositories;
+using CarListApp.Api.Service.Handlers;
 using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -89,6 +91,10 @@ internal static class ServiceCollectionExtension
 
     internal static void RegisterDependencies(this IServiceCollection services)
     {
+        // MediatoR
+        // Use typeof to identify any of the classes belonging to the assembly that contains the Commands, Queries and Handlers
+        services.AddMediatR(typeof(GetCarByIdHandler));
+
         // DTO Validators
         services.AddScoped<IValidator<IdentityUserDto>, IdentityUserValidator>();
         
