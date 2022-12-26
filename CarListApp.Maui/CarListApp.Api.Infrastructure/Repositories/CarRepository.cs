@@ -31,14 +31,19 @@ public class CarRepository : ICarRepository
         return car;
     }
 
-    public async Task DeleteCarAsync(int id)
+    public async Task<bool> DeleteCarAsync(int id)
     {
+        bool result = false;
+
         var record = await _dbContext.Cars.FindAsync(id);
         if(record is not null)
         {
             _dbContext.Remove(record);
             await _dbContext.SaveChangesAsync();
+            result = true;
         }
+
+        return result;
     }
 
     public async Task<Car> GetCarByIdAsync(int id)

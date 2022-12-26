@@ -11,7 +11,7 @@ public interface ICarRepository
 
     Task UpdateCarAsync(int id, Car car);
 
-    Task DeleteCarAsync(int id);
+    Task<bool> DeleteCarAsync(int id);
 
     Task<Car> AddCarAsync(Car car);
 }

@@ -35,15 +35,11 @@ internal static class CarsEndpointsExtension
             return Results.NoContent();
         });
 
-        endpoints.MapDelete("/cars/{id}", async (CarListDbContext db, int id) =>
+        endpoints.MapDelete("/cars/{id}", async (IMediator _mediator, int id) =>
         {
-            var record = await db.Cars.FindAsync(id);
-            if (record is null) return Results.NotFound();
-
-            db.Remove(record);
-            await db.SaveChangesAsync();
-
-            return Results.NoContent();
+            return await _mediator.Send(new DeleteCarCommand { Id = id }) 
+                ? Results.NoContent() 
+                : Results.NotFound();
         });
 
         endpoints.MapPost("/cars", async (IMediator _mediator, Car car) =>
