@@ -1,5 +1,4 @@
 ﻿using CarListApp.Api.Core.ValueObjects;
-using CarListApp.Api.Infrastructure;
 using CarListApp.Api.Service.Commands;
 using CarListApp.Api.Service.Queries;
 using MediatR;
@@ -22,17 +21,11 @@ internal static class CarsEndpointsExtension
             return car is not null ? Results.Ok(car) : Results.NotFound();
         });
 
-        endpoints.MapPut("/cars/{id}", async (CarListDbContext db, int id, Car car) =>
+        endpoints.MapPut("/cars/{id}", async (IMediator _mediator, int id, Car car) =>
         {
-            var record = await db.Cars.FindAsync(id);
-            if (record is null) return Results.NotFound();
-
-            record.Model = car.Model;
-            record.Make = car.Make;
-            record.Vin = car.Vin;
-
-            await db.SaveChangesAsync();
-            return Results.NoContent();
+            return await _mediator.Send(new UpdateCarCommand(id, car.Make, car.Model, car.Vin))
+                ? Results.NoContent()
+                : Results.NotFound();
         });
 
         endpoints.MapDelete("/cars/{id}", async (IMediator _mediator, int id) =>

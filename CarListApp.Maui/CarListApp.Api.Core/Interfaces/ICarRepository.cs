@@ -9,7 +9,7 @@ public interface ICarRepository
 
     Task<Car> GetCarByIdAsync(int id);
 
-    Task UpdateCarAsync(int id, Car car);
+    Task<bool> UpdateCarAsync(int id, Car car);
 
     Task<bool> DeleteCarAsync(int id);
 

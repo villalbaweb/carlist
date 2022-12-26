@@ -56,8 +56,10 @@ public class CarRepository : ICarRepository
         return await _dbContext.Cars.ToListAsync();
     }
 
-    public async Task UpdateCarAsync(int id, Car car)
+    public async Task<bool> UpdateCarAsync(int id, Car car)
     {
+        bool result = false;
+
         var record = await _dbContext.Cars.FindAsync(id);
         if(record is not null)
         {
@@ -66,7 +68,10 @@ public class CarRepository : ICarRepository
             record.Vin = car.Vin;
 
             await _dbContext.SaveChangesAsync();
+            result = true;
         }
+
+        return result;
     }
 
     #endregion
