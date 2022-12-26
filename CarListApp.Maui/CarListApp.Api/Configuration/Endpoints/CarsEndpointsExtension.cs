@@ -1,5 +1,6 @@
 ﻿using CarListApp.Api.Core.ValueObjects;
 using CarListApp.Api.Infrastructure;
+using CarListApp.Api.Service.Commands;
 using CarListApp.Api.Service.Queries;
 using MediatR;
 
@@ -45,12 +46,14 @@ internal static class CarsEndpointsExtension
             return Results.NoContent();
         });
 
-        endpoints.MapPost("/cars", async (CarListDbContext db, Car car) =>
+        endpoints.MapPost("/cars", async (IMediator _mediator, Car car) =>
         {
-            await db.AddAsync(car);
-            await db.SaveChangesAsync();
+            Car newCar = await _mediator.Send(new CreateCarCommand(
+                car.Make,
+                car.Model,
+                car.Vin));
 
-            return Results.Created($"/cars/{car.Id}", car);
+            return Results.Created($"/cars/{newCar.Id}", newCar);
         });
     }
 }
