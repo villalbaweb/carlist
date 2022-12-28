@@ -21,15 +21,13 @@ namespace CarListApp.Api.Configuration.ServiceCollection;
 
 internal static class ServiceCollectionExtension
 {
-    internal static void ConfigureSwaggerBehavior(this IServiceCollection services)
+    internal static IServiceCollection ConfigureSwaggerBehavior(this IServiceCollection services)
     {
         // Add services to the container.
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(c =>
         {
-            //c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
-
             // this is added to use bearer authentication
             c.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
             {
@@ -40,6 +38,12 @@ internal static class ServiceCollectionExtension
             });
             c.OperationFilter<AuthenticationRequirementsOperationFilter>();
         });
+
+        return services;
+    }
+
+    internal static IServiceCollection ConfigureCorsBehavior(this IServiceCollection services)
+    {
         services.AddCors(o =>
         {
             o.AddPolicy("AllowAll", a => a
@@ -47,16 +51,20 @@ internal static class ServiceCollectionExtension
                 .AllowAnyOrigin()
                 .AllowAnyMethod());
         });
+
+        return services;
     }
 
-    internal static void ConfigureDbBehavior(this IServiceCollection services, ConnectionStrings connectionStrings)
+    internal static IServiceCollection ConfigureDbBehavior(this IServiceCollection services, ConnectionStrings connectionStrings)
     {
         var conn = new SqliteConnection(connectionStrings.SqiteConnString);
 
         services.AddDbContext<CarListDbContext>(o => o.UseSqlite(conn));
+
+        return services;
     }
 
-    internal static void ConfigureAuthBehavior(this IServiceCollection services, JwtSettings jwtSettings)
+    internal static IServiceCollection ConfigureAuthBehavior(this IServiceCollection services, JwtSettings jwtSettings)
     {
         services.AddIdentityCore<IdentityUser>()
             .AddRoles<IdentityRole>()
@@ -87,14 +95,21 @@ internal static class ServiceCollectionExtension
             .RequireAuthenticatedUser()
             .Build();
         });
+
+        return services;
     }
 
-    internal static void RegisterDependencies(this IServiceCollection services)
+    internal static IServiceCollection ConfigureMediatorBehavior(this IServiceCollection services)
     {
         // MediatoR
         // Use typeof to identify any of the classes belonging to the assembly that contains the Commands, Queries and Handlers
         services.AddMediatR(typeof(GetCarByIdHandler));
 
+        return services;
+    }
+
+    internal static IServiceCollection RegisterDependencies(this IServiceCollection services)
+    {
         // DTO Validators
         services.AddScoped<IValidator<IdentityUserDto>, IdentityUserValidator>();
         
@@ -103,5 +118,7 @@ internal static class ServiceCollectionExtension
 
         // Repositories
         services.AddScoped<ICarRepository, CarRepository>();
+
+        return services;
     }
 }

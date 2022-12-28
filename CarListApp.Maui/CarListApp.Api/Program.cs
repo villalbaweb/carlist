@@ -7,10 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 JwtSettings jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 ConnectionStrings connectionStrings = builder.Configuration.GetSection("ConnectionStrings").Get<ConnectionStrings>();
 
-builder.Services.ConfigureSwaggerBehavior();
-builder.Services.ConfigureDbBehavior(connectionStrings);
-builder.Services.ConfigureAuthBehavior(jwtSettings);
-builder.Services.RegisterDependencies();
+builder.Services
+    .ConfigureSwaggerBehavior()
+    .ConfigureCorsBehavior()
+    .ConfigureDbBehavior(connectionStrings)
+    .ConfigureAuthBehavior(jwtSettings)
+    .ConfigureMediatorBehavior()
+    .RegisterDependencies();
 
 var app = builder.Build();
 
