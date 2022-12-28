@@ -1,5 +1,4 @@
 ﻿using CarListApp.Api.Core.Dtos;
-using CarListApp.Api.Core.Enums;
 using CarListApp.Api.Core.Settings;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
@@ -13,8 +12,10 @@ namespace CarListApp.Api.Configuration.Endpoints;
 
 internal static class AuthEndpointsExtension
 {
-    internal static void RegisterAuthEndpoints(this IEndpointRouteBuilder endpoints, JwtSettings jwtSettings)
+    internal static void RegisterAuthEndpoints(this IEndpointRouteBuilder endpoints, IConfiguration configuration)
     {
+        JwtSettings jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
+
         endpoints.MapPost("auth/login", async (
             LoginDto loginDto, 
             UserManager<IdentityUser> _userManager) =>

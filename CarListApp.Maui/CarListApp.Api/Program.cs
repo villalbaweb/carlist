@@ -1,18 +1,14 @@
 using CarListApp.Api.Configuration.Endpoints;
 using CarListApp.Api.Configuration.ServiceCollection;
-using CarListApp.Api.Core.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
-
-JwtSettings jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
-ConnectionStrings connectionStrings = builder.Configuration.GetSection("ConnectionStrings").Get<ConnectionStrings>();
 
 builder.Services
     .AddSettingsConfigurationBehavior(builder.Configuration)
     .ConfigureSwaggerBehavior()
     .ConfigureCorsBehavior()
-    .ConfigureDbBehavior(connectionStrings)
-    .ConfigureAuthBehavior(jwtSettings)
+    .ConfigureDbBehavior(builder.Configuration)
+    .ConfigureAuthBehavior(builder.Configuration)
     .ConfigureMediatorBehavior()
     .RegisterDependencies();
 
@@ -28,7 +24,7 @@ app.UseAuthorization();
 
 app.UseCors("AllowAll");
 
-app.RegisterAuthEndpoints(jwtSettings);
+app.RegisterAuthEndpoints(builder.Configuration);
 app.RegisterCarEndpoints();
 
 app.Run();

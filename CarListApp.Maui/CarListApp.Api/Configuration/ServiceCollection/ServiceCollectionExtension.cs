@@ -63,8 +63,10 @@ internal static class ServiceCollectionExtension
         return services;
     }
 
-    internal static IServiceCollection ConfigureDbBehavior(this IServiceCollection services, ConnectionStrings connectionStrings)
+    internal static IServiceCollection ConfigureDbBehavior(this IServiceCollection services, IConfiguration configuration)
     {
+        ConnectionStrings connectionStrings = configuration.GetSection("ConnectionStrings").Get<ConnectionStrings>();
+
         var conn = new SqliteConnection(connectionStrings.SqiteConnString);
 
         services.AddDbContext<CarListDbContext>(o => o.UseSqlite(conn));
@@ -72,8 +74,9 @@ internal static class ServiceCollectionExtension
         return services;
     }
 
-    internal static IServiceCollection ConfigureAuthBehavior(this IServiceCollection services, JwtSettings jwtSettings)
+    internal static IServiceCollection ConfigureAuthBehavior(this IServiceCollection services, IConfiguration configuration)
     {
+        JwtSettings jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
         services.AddIdentityCore<IdentityUser>()
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<CarListDbContext>();
