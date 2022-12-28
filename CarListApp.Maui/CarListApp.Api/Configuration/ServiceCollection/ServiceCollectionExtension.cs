@@ -21,6 +21,14 @@ namespace CarListApp.Api.Configuration.ServiceCollection;
 
 internal static class ServiceCollectionExtension
 {
+    internal static IServiceCollection AddSettingsConfigurationBehavior(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+        services.Configure<ConnectionStrings>(configuration.GetSection("ConnectionStrings"));
+
+        return services;
+    }
+
     internal static IServiceCollection ConfigureSwaggerBehavior(this IServiceCollection services)
     {
         // Add services to the container.

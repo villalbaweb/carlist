@@ -8,6 +8,7 @@ JwtSettings jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<Jw
 ConnectionStrings connectionStrings = builder.Configuration.GetSection("ConnectionStrings").Get<ConnectionStrings>();
 
 builder.Services
+    .AddSettingsConfigurationBehavior(builder.Configuration)
     .ConfigureSwaggerBehavior()
     .ConfigureCorsBehavior()
     .ConfigureDbBehavior(connectionStrings)
