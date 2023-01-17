@@ -9,7 +9,7 @@ public class CarListDbContext : IdentityDbContext
 {
 	public CarListDbContext(DbContextOptions<CarListDbContext> options) : base(options)
 	{
-        Database.EnsureCreated();
+        Database.Migrate();
 	}
 
 	public DbSet<Car> Cars { get; set; }
@@ -107,6 +107,16 @@ public class CarListDbContext : IdentityDbContext
             },
             new IdentityUser
             {
+                Id = "56c168b6-904f-479e-a580-8949b3c39412",
+                Email = "daniel@localhost.com",
+                NormalizedEmail = "DANIEL@LOCALHOST.COM",
+                UserName = "daniel@localhost.com",
+                NormalizedUserName = "DANIEL@LOCALHOST.COM",
+                PasswordHash = hasher.HashPassword(null, "P@ssword1"),
+                EmailConfirmed = true
+            },
+            new IdentityUser
+            {
                 Id = "386ec0df-f833-4091-a145-1fee28253603",
                 Email = "user@localhost.com",
                 NormalizedEmail = "USER@LOCALHOST.COM",
@@ -122,6 +132,11 @@ public class CarListDbContext : IdentityDbContext
             {
                 RoleId = "66dec4b4-76b9-4d2f-abf9-429038afe3aa",
                 UserId = "56c168b6-904f-479e-a580-8949b3c394cc"
+            },
+            new IdentityUserRole<string>
+            {
+                RoleId = "66dec4b4-76b9-4d2f-abf9-429038afe3aa",
+                UserId = "56c168b6-904f-479e-a580-8949b3c39412"
             },
             new IdentityUserRole<string>
             {
