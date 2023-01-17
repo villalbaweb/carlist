@@ -2,6 +2,7 @@
 using CarListApp.Maui.Interfaces.Helpers;
 using CarListApp.Maui.Models;
 using CarListApp.Maui.Views;
+using Microsoft.Maui.Controls;
 
 namespace CarListApp.Maui.Helpers;
 
@@ -80,6 +81,27 @@ public class MenuBuildHelper : IMenuBuildHelper
             {
                 Shell.Current.Items.Add(flyOutItem);
             }
+        }
+
+        FlyoutItem logoutFlyoutItem = new FlyoutItem()
+        {
+            Title = "Logout",
+            Route = nameof(LogoutPage),
+            FlyoutDisplayOptions = FlyoutDisplayOptions.AsSingleItem,
+            Items =
+                {
+                    new ShellContent
+                    {
+                        Icon = "dotnet_bot.svg",
+                        Title = "Logout",
+                        ContentTemplate = new DataTemplate(typeof(LogoutPage))
+                    }
+                }
+        };
+
+        if (!Shell.Current.Items.Contains(logoutFlyoutItem))
+        {
+            Shell.Current.Items.Add(logoutFlyoutItem);
         }
     }
 }

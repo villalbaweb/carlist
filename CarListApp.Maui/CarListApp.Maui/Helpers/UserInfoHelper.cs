@@ -6,6 +6,14 @@ namespace CarListApp.Maui.Helpers;
 
 public class UserInfoHelper : IUserInfoHelper
 {
+    public void ClearUserInfoPreferences()
+    {
+        if (Preferences.ContainsKey(nameof(UserInfo)))
+        {
+            Preferences.Remove(nameof(UserInfo));
+        }
+    }
+
     public UserInfo GetUserInfoFromPreferences()
     {
         var userInfoString = Preferences.Get(nameof(UserInfo), null);

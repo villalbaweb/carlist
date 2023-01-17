@@ -29,12 +29,14 @@ public static class MauiProgram
 		// View models
 		builder.Services.AddSingleton<CarListViewModel>();
 		builder.Services.AddSingleton<LoginViewModel>();
+		builder.Services.AddSingleton<LogoutPageViewModel>();
         builder.Services.AddSingleton<LoadingPageViewModel>();
         builder.Services.AddTransient<CarDetailsViewModel>();
 
 		// Pages
 		builder.Services.AddSingleton<CarListPage>();
         builder.Services.AddSingleton<LoginPage>();
+		builder.Services.AddSingleton<LogoutPage>();
         builder.Services.AddSingleton<LoadingPage>();
         builder.Services.AddTransient<CarDetailsPage>();
 
