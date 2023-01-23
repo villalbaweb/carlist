@@ -48,6 +48,9 @@ public static class MauiProgram
 		// Navigation
 		builder.Services.AddSingleton<INavigationService, NavigationService>();
 
+		// Displaye Alerts
+		builder.Services.AddSingleton<IDisplayAlertService, DisplayAlertService>();
+
 
         return builder.Build();
 	}

@@ -16,17 +16,20 @@ public partial class LoginViewModel : BaseViewModel
     private readonly IUserInfoHelper _userInfoHelper;
     private readonly IMenuBuildHelper _menuBuildHelper;
     private readonly INavigationService _navigationService;
+    private readonly IDisplayAlertService _displayAlertService;
 
     public LoginViewModel(
         CarServiceApi carServiceApi,
         IUserInfoHelper userInfoHelper,
         IMenuBuildHelper menuBuildHelper,
-        INavigationService navigationService)
+        INavigationService navigationService,
+        IDisplayAlertService displayAlertService)
     {
         _carServiceApi = carServiceApi;
         _userInfoHelper = userInfoHelper;
         _menuBuildHelper = menuBuildHelper;
         _navigationService = navigationService;
+        _displayAlertService = displayAlertService;
     }
 
     [ObservableProperty]
@@ -83,7 +86,7 @@ public partial class LoginViewModel : BaseViewModel
 
     private async Task DisplayLoginMessage(string message)
     {
-        await Shell.Current.DisplayAlert("Login Attempt Result", message, "OK");
+        await _displayAlertService.DisplayAlertAsync("Login Attempt Result", message, "OK");
         Password = string.Empty;
     }
 }

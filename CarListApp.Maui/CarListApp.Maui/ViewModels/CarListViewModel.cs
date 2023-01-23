@@ -15,6 +15,7 @@ public partial class CarListViewModel : BaseViewModel
 
 	private readonly CarServiceApi _carServiceApi;
     private readonly INavigationService _navigationService;
+	private readonly IDisplayAlertService _displayAlertService;
 
     private bool isUpdateMode;
 	private int carId;
@@ -22,19 +23,21 @@ public partial class CarListViewModel : BaseViewModel
 
 
 	public CarListViewModel(
-		CarServiceApi carServiceApi,
-        INavigationService navigationService)
-	{
-		Title = "CarList";
+        CarServiceApi carServiceApi,
+        INavigationService navigationService,
+        IDisplayAlertService displayAlertService)
+    {
+        Title = "CarList";
 
-		_carServiceApi = carServiceApi;
-		_navigationService = navigationService;
+        _carServiceApi = carServiceApi;
+        _navigationService = navigationService;
+		_displayAlertService = displayAlertService;
 
-		AddUpdateModeText = CREATE_BTN_TXT;
-	}
-	
-	
-	public ObservableCollection<Car> Cars { get; private set; } = new ();
+        AddUpdateModeText = CREATE_BTN_TXT;
+    }
+
+
+    public ObservableCollection<Car> Cars { get; private set; } = new ();
 
     [ObservableProperty]
     bool isRefreshing;
@@ -57,7 +60,7 @@ public partial class CarListViewModel : BaseViewModel
 	{
 		if (string.IsNullOrEmpty(Make) || string.IsNullOrEmpty(Model) || string.IsNullOrEmpty(Vin))
 		{
-			await Shell.Current.DisplayAlert("Invalid Data", "Please insert valid data", "OK");
+			await _displayAlertService.DisplayAlertAsync("Invalid Data", "Please insert valid data", "OK");
 			return;
 		}
 
@@ -78,7 +81,7 @@ public partial class CarListViewModel : BaseViewModel
             await _carServiceApi.AddCar(car);
         }
 
-        await Shell.Current.DisplayAlert("Info", _carServiceApi.StatusMessage, "OK");
+        await _displayAlertService.DisplayAlertAsync("Info", _carServiceApi.StatusMessage, "OK");
 		await GetCarsAsync();
 		await ClearForm();
     }
@@ -88,13 +91,13 @@ public partial class CarListViewModel : BaseViewModel
 	{
 		if(id==0)
 		{
-            await Shell.Current.DisplayAlert("Invalid Id", "Please try again", "OK");
+            await _displayAlertService.DisplayAlertAsync("Invalid Id", "Please try again", "OK");
         }
 
 		await _carServiceApi.DeleteCar(id);
 		message = _carServiceApi.StatusMessage;
 
-		await Shell.Current.DisplayAlert("Info", message, "OK");
+		await _displayAlertService.DisplayAlertAsync("Info", message, "OK");
         await GetCarsAsync();
     }
 
@@ -119,7 +122,7 @@ public partial class CarListViewModel : BaseViewModel
 		}
 		catch (Exception ex)
 		{
-			await Shell.Current.DisplayAlert("Error", "Failed to retrieve list of cars.", "OK");	// Daniel: Move this away to an abstraction the ViewModel should not be aware of the View
+			await _displayAlertService.DisplayAlertAsync("Error", "Failed to retrieve list of cars.", "OK");	// Daniel: Move this away to an abstraction the ViewModel should not be aware of the View
 			throw;
 		}
 		finally
