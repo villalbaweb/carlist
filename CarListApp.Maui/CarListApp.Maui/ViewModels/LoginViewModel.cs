@@ -1,5 +1,5 @@
-﻿using CarListApp.Maui.Helpers;
-using CarListApp.Maui.Interfaces.Helpers;
+﻿using CarListApp.Maui.Interfaces.Helpers;
+using CarListApp.Maui.Interfaces.Services;
 using CarListApp.Maui.Models;
 using CarListApp.Maui.Services;
 using CarListApp.Maui.Views;
@@ -15,15 +15,18 @@ public partial class LoginViewModel : BaseViewModel
     private readonly CarServiceApi _carServiceApi;
     private readonly IUserInfoHelper _userInfoHelper;
     private readonly IMenuBuildHelper _menuBuildHelper;
+    private readonly INavigationService _navigationService;
 
     public LoginViewModel(
         CarServiceApi carServiceApi,
         IUserInfoHelper userInfoHelper,
-        IMenuBuildHelper menuBuildHelper)
+        IMenuBuildHelper menuBuildHelper,
+        INavigationService navigationService)
     {
         _carServiceApi = carServiceApi;
         _userInfoHelper = userInfoHelper;
         _menuBuildHelper = menuBuildHelper;
+        _navigationService = navigationService;
     }
 
     [ObservableProperty]
@@ -71,7 +74,7 @@ public partial class LoginViewModel : BaseViewModel
 
                 // navigate to apps main page
                 _menuBuildHelper.BuildMenu();
-                await Shell.Current.GoToAsync($"{nameof(CarListPage)}");
+                await _navigationService.NavigateToAsync($"{nameof(CarListPage)}");
             }
             else
                 await DisplayLoginMessage("Invalid Login Attempt");

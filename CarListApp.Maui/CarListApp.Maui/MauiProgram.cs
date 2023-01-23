@@ -1,5 +1,6 @@
 ﻿using CarListApp.Maui.Helpers;
 using CarListApp.Maui.Interfaces.Helpers;
+using CarListApp.Maui.Interfaces.Services;
 using CarListApp.Maui.Services;
 using CarListApp.Maui.ViewModels;
 using CarListApp.Maui.Views;
@@ -44,6 +45,10 @@ public static class MauiProgram
 		builder.Services.AddSingleton<IUserInfoHelper, UserInfoHelper>();
 		builder.Services.AddSingleton<IMenuBuildHelper, MenuBuildHelper>();
 
-		return builder.Build();
+		// Navigation
+		builder.Services.AddSingleton<INavigationService, NavigationService>();
+
+
+        return builder.Build();
 	}
 }

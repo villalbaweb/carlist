@@ -1,5 +1,5 @@
-﻿using CarListApp.Maui.Helpers;
-using CarListApp.Maui.Interfaces.Helpers;
+﻿using CarListApp.Maui.Interfaces.Helpers;
+using CarListApp.Maui.Interfaces.Services;
 using CarListApp.Maui.Models;
 using CarListApp.Maui.Views;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,13 +11,16 @@ public partial class LoadingPageViewModel : BaseViewModel
 {
     private readonly IMenuBuildHelper _menuBuildHelper;
     private readonly IUserInfoHelper _userInfoHelper;
+    private readonly INavigationService _navigationService;
 
-	public LoadingPageViewModel(
+    public LoadingPageViewModel(
         IMenuBuildHelper menuBuildHelper,
-        IUserInfoHelper userInfoHelper)
+        IUserInfoHelper userInfoHelper,
+        INavigationService navigationService)
 	{
         _menuBuildHelper = menuBuildHelper;
         _userInfoHelper = userInfoHelper;
+        _navigationService = navigationService;
 
 		CheckUserLoginDetails();
 	}
@@ -60,11 +63,11 @@ public partial class LoadingPageViewModel : BaseViewModel
 
     private async Task GoToLoginPage()
     {
-        await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
+        await _navigationService.NavigateToAsync($"{nameof(LoginPage)}");
     }
 
     private async Task GoToCarListPage()
     {
-        await Shell.Current.GoToAsync($"{nameof(CarListPage)}");
+        await _navigationService.NavigateToAsync($"{nameof(CarListPage)}");
     }
 }

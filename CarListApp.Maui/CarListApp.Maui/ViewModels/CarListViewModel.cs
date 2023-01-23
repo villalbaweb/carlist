@@ -1,4 +1,5 @@
-﻿using CarListApp.Maui.Models;
+﻿using CarListApp.Maui.Interfaces.Services;
+using CarListApp.Maui.Models;
 using CarListApp.Maui.Services;
 using CarListApp.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -13,16 +14,21 @@ public partial class CarListViewModel : BaseViewModel
 	const string CREATE_BTN_TXT = "Add Car";
 
 	private readonly CarServiceApi _carServiceApi;
-	private bool isUpdateMode;
+    private readonly INavigationService _navigationService;
+
+    private bool isUpdateMode;
 	private int carId;
 	private string message;
 
 
-	public CarListViewModel(CarServiceApi carServiceApi)
+	public CarListViewModel(
+		CarServiceApi carServiceApi,
+        INavigationService navigationService)
 	{
 		Title = "CarList";
 
 		_carServiceApi = carServiceApi;
+		_navigationService = navigationService;
 
 		AddUpdateModeText = CREATE_BTN_TXT;
 	}
@@ -128,9 +134,7 @@ public partial class CarListViewModel : BaseViewModel
 	{
 		if(id == 0) return;
 
-		await Shell.Current.GoToAsync(		// Probably this can be abstracted away to a Navigation Interface
-			$"{ nameof(CarDetailsPage) }?Id={id}", 
-			true);
+		await _navigationService.NavigateToWithAnimationAsync($"{ nameof(CarDetailsPage) }?Id={id}");
 	}
 
     [RelayCommand]
