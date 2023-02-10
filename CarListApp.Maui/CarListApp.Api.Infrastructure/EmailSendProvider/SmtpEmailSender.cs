@@ -18,7 +18,7 @@ public class SmtpEmailSender : IEmailSender
 
     #region Public methods
 
-    public void SendEmail(SendEmailDto sendEmailDto)
+    public async Task<bool> SendEmail(SendEmailDto sendEmailDto)
     {
         try
         {
@@ -41,6 +41,8 @@ public class SmtpEmailSender : IEmailSender
         {
             Console.WriteLine(ex.ToString());
         }
+            
+        return await Task.FromResult(true);
     }
 
     #endregion

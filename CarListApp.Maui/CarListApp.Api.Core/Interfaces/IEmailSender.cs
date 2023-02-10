@@ -4,5 +4,5 @@ namespace CarListApp.Api.Core.Interfaces;
 
 public interface IEmailSender
 {
-    void SendEmail(SendEmailDto sendEmailDto);
+    Task<bool> SendEmail(SendEmailDto sendEmailDto);
 }

@@ -1,7 +1,8 @@
 ﻿using CarListApp.Api.Core.Dtos;
-using CarListApp.Api.Core.Interfaces;
 using CarListApp.Api.Core.Settings;
+using CarListApp.Api.Service.Commands;
 using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -108,7 +109,8 @@ internal static class AuthEndpointsExtension
         endpoints.MapPost("auth/forgot", async (
             string email,
             UserManager<IdentityUser> _userManager,
-            IEmailSender _emailSender) =>
+            IMediator _mediator,
+            CancellationToken cancellationToken) =>
         {
             var user = await _userManager.FindByEmailAsync(email);
 
@@ -118,10 +120,12 @@ internal static class AuthEndpointsExtension
 
             var response = new PasswordForgotDto(email, token);
 
-            // TODO: send email with corresponding data for the user to update password
-            _emailSender.SendEmail(new SendEmailDto("villalbaweb@gmail.com", "villalbaweb@gmail.com", "SMPT Test", "This is just a test"));
+            SendEmailDto sendEmailDto = new SendEmailDto("villalbaweb@gmail.com", "villalbaweb@gmail.com", "SMPT Test", token);
 
-            return Results.Ok(response);
+            return await _mediator.Send(new SendEmailCommand(sendEmailDto), cancellationToken)
+                ? Results.Ok(response)
+                : Results.Ok();
+
         }).AllowAnonymous();
 
         endpoints.MapPost("auth/reset", async (
