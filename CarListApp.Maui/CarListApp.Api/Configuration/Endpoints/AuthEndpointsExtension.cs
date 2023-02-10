@@ -1,4 +1,5 @@
 ﻿using CarListApp.Api.Core.Dtos;
+using CarListApp.Api.Core.Interfaces;
 using CarListApp.Api.Core.Settings;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
@@ -106,7 +107,8 @@ internal static class AuthEndpointsExtension
 
         endpoints.MapPost("auth/forgot", async (
             string email,
-            UserManager<IdentityUser> _userManager) =>
+            UserManager<IdentityUser> _userManager,
+            IEmailSender _emailSender) =>
         {
             var user = await _userManager.FindByEmailAsync(email);
 
@@ -117,6 +119,7 @@ internal static class AuthEndpointsExtension
             var response = new PasswordForgotDto(email, token);
 
             // TODO: send email with corresponding data for the user to update password
+            _emailSender.SendEmail(new SendEmailDto("villalbaweb@gmail.com", "villalbaweb@gmail.com", "SMPT Test", "This is just a test"));
 
             return Results.Ok(response);
         }).AllowAnonymous();
@@ -125,16 +128,16 @@ internal static class AuthEndpointsExtension
             PasswordResetDto passwordResetDto,
             UserManager<IdentityUser> _userManager) =>
         {
-            var user = await _userManager.FindByEmailAsync(passwordResetDto.email);
+            var user = await _userManager.FindByEmailAsync(passwordResetDto.Email);
 
             if (user is null) return Results.NotFound();
 
-            var reserPasswordResult = await _userManager.ResetPasswordAsync(user, passwordResetDto.token, passwordResetDto.newPassword);
+            var reserPasswordResult = await _userManager.ResetPasswordAsync(user, passwordResetDto.Token, passwordResetDto.NewPassword);
             if (!reserPasswordResult.Succeeded)
             {
                     ProblemDetails problemDetails = new ProblemDetails
                     {
-                        Title = $"Problem detected while reseting password for {passwordResetDto.email}.",
+                        Title = $"Problem detected while reseting password for {passwordResetDto.Email}.",
                         Status = 406,
                         Detail = "Please find details about specific attempt failure."
                     };

@@ -4,6 +4,7 @@ using CarListApp.Api.Core.Interfaces;
 using CarListApp.Api.Core.Settings;
 using CarListApp.Api.DtoValidators;
 using CarListApp.Api.Infrastructure;
+using CarListApp.Api.Infrastructure.EmailSendProvider;
 using CarListApp.Api.Infrastructure.Repositories;
 using CarListApp.Api.Service.Handlers;
 using FluentValidation;
@@ -132,6 +133,9 @@ internal static class ServiceCollectionExtension
 
         // Repositories
         services.AddScoped<ICarRepository, CarRepository>();
+
+        // Providers
+        services.AddScoped<IEmailSender, SmtpEmailSender > ();
 
         return services;
     }
