@@ -26,6 +26,7 @@ internal static class ServiceCollectionExtension
     {
         services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
         services.Configure<ConnectionStrings>(configuration.GetSection("ConnectionStrings"));
+        services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
 
         return services;
     }

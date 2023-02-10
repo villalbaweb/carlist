@@ -1,5 +1,4 @@
-﻿using CarListApp.Api.Core.Dtos;
-using CarListApp.Api.Core.Interfaces;
+﻿using CarListApp.Api.Core.Interfaces;
 using CarListApp.Api.Service.Commands;
 using MediatR;
 

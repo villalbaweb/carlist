@@ -2,16 +2,24 @@
 using CarListApp.Api.Core.Interfaces;
 using System.Net.Mail;
 using System.Net;
+using CarListApp.Api.Core.Settings;
+using Microsoft.Extensions.Options;
 
 namespace CarListApp.Api.Infrastructure.EmailSendProvider;
 
 public class SmtpEmailSender : IEmailSender
 {
+    #region Private Members
+
+    private readonly EmailSettings _emailSettings;
+
+    #endregion
+
     #region Constructor
 
-    public SmtpEmailSender()
+    public SmtpEmailSender(IOptions<EmailSettings> options)
     {
-
+        _emailSettings = options.Value;
     }
 
     #endregion
@@ -31,7 +39,7 @@ public class SmtpEmailSender : IEmailSender
             mail.Body = sendEmailDto.Body;
 
             SmtpServer.Port = 587;
-            SmtpServer.Credentials = new NetworkCredential("villalbaweb@gmail.com", "oervzqtacvdeixop");
+            SmtpServer.Credentials = new NetworkCredential(_emailSettings.Email, _emailSettings.GmailUniquePassword);
             SmtpServer.EnableSsl = true;
 
             SmtpServer.Send(mail);
