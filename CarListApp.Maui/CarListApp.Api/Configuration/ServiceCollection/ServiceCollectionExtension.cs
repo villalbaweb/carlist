@@ -79,7 +79,10 @@ internal static class ServiceCollectionExtension
         JwtSettings jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
         services.AddIdentityCore<IdentityUser>()
             .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<CarListDbContext>();
+            .AddEntityFrameworkStores<CarListDbContext>()
+            .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>(TokenOptions.DefaultProvider);
+
+        services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromMinutes(10));
 
         services.AddAuthentication(oprions =>
         {

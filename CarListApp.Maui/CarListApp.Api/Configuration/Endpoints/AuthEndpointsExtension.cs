@@ -104,6 +104,53 @@ internal static class AuthEndpointsExtension
             return Results.Created("URI to retrieve detail about the created user TODO", identityUser);
         }).AllowAnonymous();
 
+        endpoints.MapPost("auth/forgot", async (
+            string email,
+            UserManager<IdentityUser> _userManager) =>
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user is null) return Results.NotFound();
+
+            var token =  await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            var response = new PasswordForgotDto(email, token);
+
+            // TODO: send email with corresponding data for the user to update password
+
+            return Results.Ok(response);
+        }).AllowAnonymous();
+
+        endpoints.MapPost("auth/reset", async (
+            PasswordResetDto passwordResetDto,
+            UserManager<IdentityUser> _userManager) =>
+        {
+            var user = await _userManager.FindByEmailAsync(passwordResetDto.email);
+
+            if (user is null) return Results.NotFound();
+
+            var reserPasswordResult = await _userManager.ResetPasswordAsync(user, passwordResetDto.token, passwordResetDto.newPassword);
+            if (!reserPasswordResult.Succeeded)
+            {
+                    ProblemDetails problemDetails = new ProblemDetails
+                    {
+                        Title = $"Problem detected while reseting password for {passwordResetDto.email}.",
+                        Status = 406,
+                        Detail = "Please find details about specific attempt failure."
+                    };
+
+                    foreach (var error in reserPasswordResult.Errors)
+                    {
+                        problemDetails.Extensions.Add(error.Code, error.Description);
+                    }
+
+                    return Results.Problem(problemDetails);
+                }
+
+            return Results.Ok("Password has been changed!");
+
+        }).AllowAnonymous();
+
         endpoints.MapGet("auth/users", async(
             string role,
             UserManager<IdentityUser> _userManager,
