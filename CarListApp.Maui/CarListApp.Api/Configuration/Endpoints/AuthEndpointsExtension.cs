@@ -157,7 +157,7 @@ internal static class AuthEndpointsExtension
                     errors.Add($"{error.Code} - {error.Description}");
                 }
                     
-                problemDetails.Extensions.Add("Errors", errors);
+                problemDetails.Extensions.Add("errors", errors);
 
                 return Results.Problem(problemDetails);
             }
