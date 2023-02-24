@@ -120,7 +120,11 @@ internal static class AuthEndpointsExtension
 
             var response = new PasswordForgotDto(email, token);
 
-            SendEmailDto sendEmailDto = new SendEmailDto("villalbaweb@gmail.com", "villalbaweb@gmail.com", "SMPT Test", token);
+            // Sample to send url in template body
+            // http://localhost:3000/?token=123456&name=Daniel&email=daniel@localhost.com
+            string bodySample = $"http://localhost:3000/?token={token}&name={user.UserName}&email={user.Email}";
+
+            SendEmailDto sendEmailDto = new SendEmailDto("villalbaweb@gmail.com", "villalbaweb@gmail.com", "SMPT Test", bodySample);
 
             return await _mediator.Send(new SendEmailCommand(sendEmailDto), cancellationToken)
                 ? Results.Ok(response)
@@ -139,22 +143,31 @@ internal static class AuthEndpointsExtension
             var reserPasswordResult = await _userManager.ResetPasswordAsync(user, passwordResetDto.Token, passwordResetDto.NewPassword);
             if (!reserPasswordResult.Succeeded)
             {
-                    ProblemDetails problemDetails = new ProblemDetails
-                    {
-                        Title = $"Problem detected while reseting password for {passwordResetDto.Email}.",
-                        Status = 406,
-                        Detail = "Please find details about specific attempt failure."
-                    };
+                ProblemDetails problemDetails = new ProblemDetails
+                {
+                    Title = $"Problem detected while reseting password for {passwordResetDto.Email}.",
+                    Status = 406,
+                    Detail = "Please find details about specific attempt failure."
+                };
 
-                    foreach (var error in reserPasswordResult.Errors)
-                    {
-                        problemDetails.Extensions.Add(error.Code, error.Description);
-                    }
+                List<string> errors = new List<string>();    
 
-                    return Results.Problem(problemDetails);
+                foreach (var error in reserPasswordResult.Errors)
+                {
+                    errors.Add($"{error.Code} - {error.Description}");
                 }
+                    
+                problemDetails.Extensions.Add("Errors", errors);
 
-            return Results.Ok("Password has been changed!");
+                return Results.Problem(problemDetails);
+            }
+
+            return Results.Ok(new 
+            {
+                Title = "Password Succesfuly Updated",
+                Status = 200,
+                Detail = $"Dear {user.UserName} your password has been updated, please go back to login."
+            });
 
         }).AllowAnonymous();
 
