@@ -121,8 +121,8 @@ internal static class AuthEndpointsExtension
             var response = new PasswordForgotDto(email, token);
 
             // Sample to send url in template body
-            // http://localhost:3000/?token=123456&name=Daniel&email=daniel@localhost.com
-            string bodySample = $"http://localhost:3000/?token={token}&name={user.UserName}&email={user.Email}";
+            // <hostname>/?token=123456&name=Daniel&email=daniel@localhost.com
+            string bodySample = $"https://ambitious-dune-06adddd0f.2.azurestaticapps.net/?token={token}&name={user.UserName}&email={user.Email}";
 
             SendEmailDto sendEmailDto = new SendEmailDto("villalbaweb@gmail.com", "villalbaweb@gmail.com", "SMPT Test", bodySample);
 
