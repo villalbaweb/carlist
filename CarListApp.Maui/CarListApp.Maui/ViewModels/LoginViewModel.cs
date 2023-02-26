@@ -85,13 +85,13 @@ public partial class LoginViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    async Task NavigateToSignUp()
+    async Task NavigateToSignUpAsync()
     {
-        await _displayAlertService.DisplayAlertAsync("Sign up Navigate", "Sign up Button Clicked...", "OK");
+        await _navigationService.NavigateToAsync($"{nameof(SignupPage)}");
     }
 
     [RelayCommand]
-    async Task PasswordForgotten()
+    async Task PasswordForgottenAsync()
     {
         await _displayAlertService.DisplayAlertAsync("Password Forgotten", "Password Forgotten Clicked...", "OK");
     }
