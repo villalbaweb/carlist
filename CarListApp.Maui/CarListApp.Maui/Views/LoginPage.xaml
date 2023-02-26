@@ -23,6 +23,10 @@
             <Entry x:Name="Password" Placeholder="Enter Password" IsPassword="True" Text="{Binding Password}"/>
         </StackLayout>
 
-        <Button Text="Sign In" WidthRequest="100" CornerRadius="20" HorizontalOptions="Center" Command="{Binding LoginCommand}"/>
+        <Button Text="Log In" WidthRequest="350" CornerRadius="20" HorizontalOptions="Center" Command="{Binding LoginCommand}"/>
+
+        <Button Text="Sign Up" WidthRequest="350" CornerRadius="20" HorizontalOptions="Center" Command="{Binding NavigateToSignUpCommand}"/>
+
+        <Button Text="Password Forgotten?" WidthRequest="350" CornerRadius="20" HorizontalOptions="Center" Command="{Binding PasswordForgottenCommand}"/>
     </VerticalStackLayout>
 </ContentPage>
