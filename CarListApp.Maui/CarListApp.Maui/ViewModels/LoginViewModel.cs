@@ -1,7 +1,6 @@
 ﻿using CarListApp.Maui.Interfaces.Helpers;
 using CarListApp.Maui.Interfaces.Services;
 using CarListApp.Maui.Models;
-using CarListApp.Maui.Services;
 using CarListApp.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -12,14 +11,14 @@ namespace CarListApp.Maui.ViewModels;
 
 public partial class LoginViewModel : BaseViewModel
 {
-    private readonly CarServiceApi _carServiceApi;
+    private readonly ICarServiceApi _carServiceApi;
     private readonly IUserInfoHelper _userInfoHelper;
     private readonly IMenuBuildHelper _menuBuildHelper;
     private readonly INavigationService _navigationService;
     private readonly IDisplayAlertService _displayAlertService;
 
     public LoginViewModel(
-        CarServiceApi carServiceApi,
+        ICarServiceApi carServiceApi,
         IUserInfoHelper userInfoHelper,
         IMenuBuildHelper menuBuildHelper,
         INavigationService navigationService,
@@ -57,7 +56,7 @@ public partial class LoginViewModel : BaseViewModel
             var response = await _carServiceApi.Login(loginModel);
 
                 // display welcome message
-            await DisplayLoginMessage(_carServiceApi.StatusMessage);
+            await DisplayLoginMessage(await _carServiceApi.GetStatusMessage());
 
             if (response is not null && !string.IsNullOrEmpty(response.Token))
             {

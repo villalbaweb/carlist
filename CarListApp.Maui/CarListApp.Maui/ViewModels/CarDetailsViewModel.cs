@@ -1,5 +1,5 @@
-﻿using CarListApp.Maui.Models;
-using CarListApp.Maui.Services;
+﻿using CarListApp.Maui.Interfaces.Services;
+using CarListApp.Maui.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Web;
 
@@ -10,7 +10,7 @@ public partial class CarDetailsViewModel : BaseViewModel, IQueryAttributable
 {
 
 
-    private readonly CarServiceApi _carServiceApi;
+    private readonly ICarServiceApi _carServiceApi;
 
 
     [ObservableProperty]
@@ -19,7 +19,7 @@ public partial class CarDetailsViewModel : BaseViewModel, IQueryAttributable
     [ObservableProperty]
     int id;
 
-    public CarDetailsViewModel(CarServiceApi carServiceApi)
+    public CarDetailsViewModel(ICarServiceApi carServiceApi)
     {
         _carServiceApi= carServiceApi;
     }

@@ -1,10 +1,11 @@
-﻿using CarListApp.Maui.Models;
+﻿using CarListApp.Maui.Interfaces.Services;
+using CarListApp.Maui.Models;
 using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace CarListApp.Maui.Services;
 
-public class CarServiceApi
+public class CarServiceApi : ICarServiceApi
 {
     HttpClient _httpClient;
 	static string BaseAddress = "https://carlist-api.azurewebsites.net";
@@ -116,5 +117,10 @@ public class CarServiceApi
         var token = await SecureStorage.GetAsync("Token");
 
         _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+    }
+
+    public async Task<string> GetStatusMessage()
+    {
+        return await Task.FromResult(StatusMessage);
     }
 }

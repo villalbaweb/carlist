@@ -13,7 +13,7 @@ public partial class CarListViewModel : BaseViewModel
 	const string EDIT_BTN_TXT = "Update Car";
 	const string CREATE_BTN_TXT = "Add Car";
 
-	private readonly CarServiceApi _carServiceApi;
+	private readonly ICarServiceApi _carServiceApi;
     private readonly INavigationService _navigationService;
 	private readonly IDisplayAlertService _displayAlertService;
 
@@ -23,7 +23,7 @@ public partial class CarListViewModel : BaseViewModel
 
 
 	public CarListViewModel(
-        CarServiceApi carServiceApi,
+        ICarServiceApi carServiceApi,
         INavigationService navigationService,
         IDisplayAlertService displayAlertService)
     {
@@ -81,7 +81,7 @@ public partial class CarListViewModel : BaseViewModel
             await _carServiceApi.AddCar(car);
         }
 
-        await _displayAlertService.DisplayAlertAsync("Info", _carServiceApi.StatusMessage, "OK");
+        await _displayAlertService.DisplayAlertAsync("Info", await _carServiceApi.GetStatusMessage(), "OK");
 		await GetCarsAsync();
 		await ClearForm();
     }
@@ -95,7 +95,7 @@ public partial class CarListViewModel : BaseViewModel
         }
 
 		await _carServiceApi.DeleteCar(id);
-		message = _carServiceApi.StatusMessage;
+		message = await _carServiceApi.GetStatusMessage();
 
 		await _displayAlertService.DisplayAlertAsync("Info", message, "OK");
         await GetCarsAsync();

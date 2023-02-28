@@ -25,7 +25,7 @@ public static class MauiProgram
 		
 		// Services
 		builder.Services.AddSingleton(s => ActivatorUtilities.CreateInstance<CarServiceDatabase>(s, dbPath));
-		builder.Services.AddSingleton<CarServiceApi>();
+		builder.Services.AddSingleton<ICarServiceApi, CarServiceApi>();
 
 		// View models
 		builder.Services.AddSingleton<CarListViewModel>();
