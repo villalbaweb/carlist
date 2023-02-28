@@ -18,7 +18,10 @@ public class CarServiceApi : ICarServiceApi
 		_httpClient.BaseAddress = new Uri(BaseAddress);
 	}
 
-	public async Task<List<Car>> GetCars()
+
+    #region Car Endpoints
+
+    public async Task<List<Car>> GetCars()
 	{
         try
         {
@@ -93,6 +96,17 @@ public class CarServiceApi : ICarServiceApi
         }
     }
 
+
+    public async Task<string> GetStatusMessage()
+    {
+        return await Task.FromResult(StatusMessage);
+    }
+
+    #endregion
+
+
+    #region Auth Endpoints
+
     public async Task<AuthResponseModel> Login(LoginModel loginModel)
     {
         try
@@ -119,8 +133,20 @@ public class CarServiceApi : ICarServiceApi
         _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
     }
 
-    public async Task<string> GetStatusMessage()
+    public async Task Register(RegisterModel registerModel)
     {
-        return await Task.FromResult(StatusMessage);
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("/auth/register", registerModel);
+            response.EnsureSuccessStatusCode();
+            StatusMessage = "Registration Succesful.";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = "Failed to register.";
+        }
     }
+
+    #endregion
+
 }

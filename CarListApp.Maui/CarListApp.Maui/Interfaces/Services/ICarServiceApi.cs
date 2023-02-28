@@ -14,9 +14,11 @@ public interface ICarServiceApi
 
     Task DeleteCar(int id);
 
+    Task<string> GetStatusMessage();
+
     Task<AuthResponseModel> Login(LoginModel loginModel);
 
     Task SetAuthToken();
 
-    Task<string> GetStatusMessage();
+    Task Register(RegisterModel registerModel);
 }

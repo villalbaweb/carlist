@@ -1,4 +1,6 @@
 ﻿using CarListApp.Maui.Interfaces.Services;
+using CarListApp.Maui.Models;
+using CarListApp.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -6,11 +8,17 @@ namespace CarListApp.Maui.ViewModels;
 
 public partial class SignupViewModel : BaseViewModel
 {
+    private readonly ICarServiceApi _carServiceApi;
+    private readonly INavigationService _navigationService;
     private readonly IDisplayAlertService _displayAlertService;
 
     public SignupViewModel(
+        ICarServiceApi carServiceApi,
+        INavigationService navigationService,
         IDisplayAlertService displayAlertService)
     {
+        _carServiceApi = carServiceApi;
+        _navigationService = navigationService;
         _displayAlertService = displayAlertService;
     }
 
@@ -34,6 +42,20 @@ public partial class SignupViewModel : BaseViewModel
         if(isSignUpDataComplete)
         {
             await SignUpAlertDisplay("Proceed with Sign Up request...");
+
+            RegisterModel registerModel = new RegisterModel
+            {
+                Email = Email,
+                Username = Username,
+                Password = Password,
+                ConfirmPassword = ConfirmPassword,
+                Role = "User"
+            };
+
+            await _carServiceApi.Register(registerModel);
+            await SignUpAlertDisplay(await _carServiceApi.GetStatusMessage());
+
+            await _navigationService.NavigateToAsync($"{nameof(LoginPage)}");
         }
     }
 
@@ -43,28 +65,34 @@ public partial class SignupViewModel : BaseViewModel
         if (string.IsNullOrEmpty(Username))
         {
             await SignUpAlertDisplay("Please enter Username.");
-            return await Task.FromResult(false);
+            return false;
         }
 
         if (string.IsNullOrEmpty(Email))
         {
             await SignUpAlertDisplay("Please enter Email.");
-            return await Task.FromResult(false);
+            return false;
         }
 
         if (string.IsNullOrEmpty(Password))
         {
             await SignUpAlertDisplay("Please enter Password.");
-            return await Task.FromResult(false);
+            return false;
         }
 
         if (string.IsNullOrEmpty(ConfirmPassword))
         {
             await SignUpAlertDisplay("Please enter Password Confirmation.");
-            return await Task.FromResult(false);
+            return false;
         }
 
-        return await Task.FromResult(true);
+        if (!string.Equals(Password, ConfirmPassword, StringComparison.Ordinal))
+        {
+            await SignUpAlertDisplay("Confirmation Password does not match.");
+            return false;
+        }
+
+        return true;
     }
 
     private async Task SignUpAlertDisplay(string message)
