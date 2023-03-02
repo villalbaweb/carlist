@@ -33,7 +33,8 @@ public static class MauiProgram
 		builder.Services.AddSingleton<SignupViewModel>();
 		builder.Services.AddSingleton<LogoutPageViewModel>();
         builder.Services.AddSingleton<LoadingPageViewModel>();
-        builder.Services.AddTransient<CarDetailsViewModel>();
+        builder.Services.AddSingleton<CarDetailsViewModel>();
+		builder.Services.AddSingleton<PasswordForgotViewModel>();
 
 		// Pages
 		builder.Services.AddSingleton<CarListPage>();
@@ -41,10 +42,11 @@ public static class MauiProgram
 		builder.Services.AddSingleton<SignupPage>();
 		builder.Services.AddSingleton<LogoutPage>();
         builder.Services.AddSingleton<LoadingPage>();
-        builder.Services.AddTransient<CarDetailsPage>();
+        builder.Services.AddSingleton<CarDetailsPage>();
+		builder.Services.AddSingleton<PasswordForgotPage>();
 
-		// Helpers
-		builder.Services.AddSingleton<IUserInfoHelper, UserInfoHelper>();
+        // Helpers
+        builder.Services.AddSingleton<IUserInfoHelper, UserInfoHelper>();
 		builder.Services.AddSingleton<IMenuBuildHelper, MenuBuildHelper>();
 
 		// Navigation

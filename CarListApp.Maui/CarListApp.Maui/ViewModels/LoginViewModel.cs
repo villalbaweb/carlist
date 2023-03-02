@@ -92,7 +92,7 @@ public partial class LoginViewModel : BaseViewModel
     [RelayCommand]
     async Task PasswordForgottenAsync()
     {
-        await _displayAlertService.DisplayAlertAsync("Password Forgotten", "Password Forgotten Clicked...", "OK");
+        await _navigationService.NavigateToAsync($"{nameof(PasswordForgotPage)}");
     }
 
     private async Task DisplayLoginMessage(string message)
