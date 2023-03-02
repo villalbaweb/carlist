@@ -27,8 +27,8 @@ public partial class PasswordForgotViewModel : BaseViewModel
     [RelayCommand]
     async Task RequestRecoveryMailAsync()
     {
-        // Send recovery password email here...
-        await _displayAlertService.DisplayAlertAsync("Password Forgotten Page", "Password Change mail has been sent.", "OK");
+        await _carServiceApi.PasswordRecovery(Email);
+        await _displayAlertService.DisplayAlertAsync("Password Forgotten Page", await _carServiceApi.GetStatusMessage(), "OK");
         await _navigationService.NavigateToAsync($"{nameof(LoginPage)}");
     }
 }

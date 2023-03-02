@@ -21,4 +21,6 @@ public interface ICarServiceApi
     Task SetAuthToken();
 
     Task Register(RegisterModel registerModel);
+
+    Task PasswordRecovery(string email);
 }

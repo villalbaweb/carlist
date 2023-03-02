@@ -147,6 +147,20 @@ public class CarServiceApi : ICarServiceApi
         }
     }
 
+    public async Task PasswordRecovery(string email)
+    {
+        try
+        {
+            var response = await _httpClient.PostAsync($"/auth/forgot?email={email}", null);
+            response.EnsureSuccessStatusCode();
+            StatusMessage = "Password Recovery Email has been sent.";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = "Failed to send Password Recovery mail.";
+        }
+    }
+
     #endregion
 
 }
